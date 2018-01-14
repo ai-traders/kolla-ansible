@@ -73,6 +73,7 @@ database_port: "3306"
 ####################
 # Docker options
 ####################
+docker_daemon_reconfigure: false
 docker_registry_email:
 docker_registry:
 docker_namespace: "kolla"
