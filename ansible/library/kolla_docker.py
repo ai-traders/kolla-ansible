@@ -196,6 +196,16 @@ import traceback
 
 import docker
 
+import errno
+
+def mkdir_p(path):
+    try:
+        os.makedirs(path)
+    except OSError as exc:  # Python >2.5
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else:
+            raise
 
 def get_docker_client():
     return docker.APIClient
@@ -683,7 +693,11 @@ class DockerWorker(object):
     def create_volume(self):
         if not self.check_volume():
             self.changed = True
-            self.dc.create_volume(name=self.params.get('name'), driver='local')
+            name = self.params.get('name')
+            host_dir = '/var/ait/' + name
+            mkdir_p(host_dir)
+            self.dc.create_volume(name=name, driver='local',
+                driver_opts={'type': 'none', 'device': host_dir, 'o': 'bind' })
 
     def remove_volume(self):
         if self.check_volume():
