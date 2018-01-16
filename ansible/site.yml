@@ -31,6 +31,29 @@
       when:
         - (ansible_play_batch | length) != (groups['all'] | length)
 
+- name: Detect interfaces
+  hosts: all
+  serial: '{{ serial|default("0") }}'
+  gather_facts: false
+  tasks:
+    - name: Find management interface
+      vars:
+        management_network: 192.168.200.0
+        ansible_interface_name: "ansible_{{ item.replace('-', '_') }}"
+      set_fact:
+        management_network_address: "{{ hostvars[inventory_hostname][ansible_interface_name]['ipv4']['address'] }}"
+        management_network_interface: "{{ item }}"
+        api_interface_name: "{{ item }}"
+      when:
+        - hostvars[inventory_hostname][ansible_interface_name]['ipv4'] is defined
+        - hostvars[inventory_hostname][ansible_interface_name]['ipv4']['network'] == management_network
+      with_items: "{{ ansible_interfaces }}"
+    - name: Show management interfaces
+      debug:
+        msg: "Interface: {{ management_network_interface }} is in management network at {{ management_network_address }}"
+      when:
+        - not inventory_hostname in groups['deployment']
+
 - name: Detect openstack_release variable
   hosts: all
   gather_facts: false
