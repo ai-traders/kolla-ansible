@@ -1,0 +1,8 @@
+<match **>
+  type gelf
+  host {{ graylog_host }}
+  port {{ graylog_port }}
+  protocol udp
+  tls false
+  flush_interval 10s
+</match>

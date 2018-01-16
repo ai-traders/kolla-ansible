@@ -72,6 +72,13 @@
             "owner": "{{ fluentd_user }}",
             "perm": "0600"
         },{% endif %}
+        {% if enable_graylog_logging | bool %}
+        {
+            "source": "{{ container_config_directory }}/output/02-gelf.conf",
+            "dest": "{{ fluentd_dir }}/output/02-gelf.conf",
+            "owner": "{{ fluentd_user }}",
+            "perm": "0600"
+        },{% endif %}
         {
             "source": "{{ container_config_directory }}/output/00-local.conf",
             "dest": "{{ fluentd_dir }}/output/00-local.conf",

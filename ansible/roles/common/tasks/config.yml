@@ -46,6 +46,8 @@
   with_items:
     - name: "00-local"
       enabled: true
+    - name: "02-gelf"
+      enabled: "{{ enable_graylog_logging | bool }}"
     - name: "01-es"
       enabled: "{{ enable_elasticsearch | bool or
                 ( elasticsearch_address != kolla_internal_vip_address ) }}"
