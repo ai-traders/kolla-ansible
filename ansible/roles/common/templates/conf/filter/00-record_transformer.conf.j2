@@ -13,3 +13,10 @@
         programname ${tag_parts[1]}
     </record>
 </filter>
+
+<filter **>
+  @type record_transformer
+  <record>
+    environment {{ logging_environment }}
+  </record>
+</filter>

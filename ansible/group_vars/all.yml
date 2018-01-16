@@ -15,7 +15,6 @@ project: ""
 # The directory to store the config files on the destination node
 node_config_directory: "/etc/kolla/{{ project }}"
 
-
 ###################
 # Kolla options
 ###################
@@ -440,6 +439,7 @@ enable_destroy_images: "no"
 # Logging options
 ####################
 
+logging_environment: testing
 enable_graylog_logging: "no"
 graylog_port: 12201
 elasticsearch_address: "{{ kolla_internal_vip_address }}"
