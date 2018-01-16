@@ -21,7 +21,7 @@ openvswitch_services:
       - "/etc/localtime:/etc/localtime:ro"
       - "/run:/run:shared"
       - "kolla_logs:/var/log/kolla/"
-      - "openvswitch_db:/var/lib/openvswitch/"
+      - "/var/ait/openvswitch_db:/var/lib/openvswitch/"
   openvswitch-vswitchd:
     container_name: "openvswitch_vswitchd"
     image: "{{ openvswitch_vswitchd_image_full }}"
