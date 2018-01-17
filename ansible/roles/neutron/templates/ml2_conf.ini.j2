@@ -60,7 +60,11 @@ firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
 {% if neutron_plugin_agent == "openvswitch" or neutron_plugin_agent == "opendaylight" %}
 {% if not enable_hyperv | bool %}
 [agent]
+{% if 'vxlan' in neutron_type_drivers %}
 tunnel_types = vxlan
+{% else %}
+tunnel_types =
+{% endif %}
 l2_population = true
 arp_responder = true
 {% endif %}
