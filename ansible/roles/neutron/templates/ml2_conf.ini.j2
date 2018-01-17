@@ -79,7 +79,7 @@ extensions = {{ neutron_agent_extensions|map(attribute='name')|join(',') }}
 
 [ovs]
 {% if inventory_hostname in groups["network"] or (inventory_hostname in groups["compute"] and computes_need_external_bridge ) %}
-bridge_mappings = {% for bridge in neutron_bridge_name.split(',') %}physnet{{ loop.index0 + 1 }}:{{ bridge }}{% if not loop.last %},{% endif %}{% endfor %}
+bridge_mappings = external:br-ex,data:br-{{ data_network_interface }}
 {% endif %}
 
 ovsdb_connection = tcp:127.0.0.1:{{ ovsdb_port }}

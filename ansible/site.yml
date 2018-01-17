@@ -56,6 +56,23 @@
       when:
         - not inventory_hostname in groups['deployment']
 
+    - name: Find data interface
+      vars:
+        data_network: 192.168.100.0
+        ansible_interface_name: "ansible_{{ item.replace('-', '_') }}"
+      set_fact:
+        data_network_address: "{{ hostvars[inventory_hostname][ansible_interface_name]['ipv4']['address'] }}"
+        data_network_interface: "{{ item }}"
+      when:
+        - hostvars[inventory_hostname][ansible_interface_name]['ipv4'] is defined
+        - hostvars[inventory_hostname][ansible_interface_name]['ipv4']['network'] == data_network
+      with_items: "{{ ansible_interfaces }}"
+    - name: Show data interfaces
+      debug:
+        msg: "Interface: {{ data_network_interface }} is in data network at {{ data_network_address }}"
+      when:
+        - not inventory_hostname in groups['deployment']
+
 - name: Detect openstack_release variable
   hosts: all
   gather_facts: false
