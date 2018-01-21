@@ -42,9 +42,9 @@
         ansible_interface_name: "ansible_{{ item.replace('-', '_') }}"
       set_fact:
         management_network_address: "{{ hostvars[inventory_hostname][ansible_interface_name]['ipv4']['address'] }}"
-        management_network_interface: "{{ item }}"
-        api_interface_name: "{{ item }}"
-        api_interface: "{{ item }}"
+        management_network_interface: "{{ item.replace('br-', '') }}"
+        api_interface_name: "{{ item.replace('br-', '') }}"
+        api_interface: "{{ item.replace('br-', '') }}"
         api_interface_address: "{{ hostvars[inventory_hostname][ansible_interface_name]['ipv4']['address'] }}"
       when:
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4'] is defined
@@ -62,7 +62,7 @@
         ansible_interface_name: "ansible_{{ item.replace('-', '_') }}"
       set_fact:
         data_network_address: "{{ hostvars[inventory_hostname][ansible_interface_name]['ipv4']['address'] }}"
-        data_network_interface: "{{ item }}"
+        data_network_interface: "{{ item.replace('br-', '') }}"
       when:
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4'] is defined
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4']['network'] == data_network
