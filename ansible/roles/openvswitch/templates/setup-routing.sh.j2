@@ -1,0 +1,15 @@
+#!/bin/bash
+
+eth="{{ eth }}"
+bridge="{{ bridge }}"
+
+ip=$(ifconfig $eth | awk '/inet addr/{print substr($2,6)}')
+if [ -z "$ip" ];
+  then echo "$eth has no IP, seems to be configured already";
+else
+  echo "Moving IP $ip from $eth to $bridge";
+  ifconfig $bridge $ip/24 up
+  ifconfig $eth 0.0.0.0 up
+  route del default
+  ip route add default via 192.168.200.1
+fi
