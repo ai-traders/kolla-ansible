@@ -63,7 +63,7 @@
   with_dict: "{{ openvswitch_services }}"
   notify:
     - "Restart {{ item.key }} container"
-    
+
 - name: Install routing setup script
   vars:
     bridge: "{{ item.0 }}"
@@ -77,12 +77,4 @@
       or (inventory_hostname in groups["compute"] and computes_need_external_bridge)
   with_together:
     - "{{ neutron_bridge_name.split(',') }}"
-    - "{{ neutron_external_interface.split(',') }}"
-
-- name: Execute routing setup script
-  command: "/etc/cont-init.d/01-setup-routing-{{ item }}"
-  when:
-    - inventory_hostname in groups["network"]
-      or (inventory_hostname in groups["compute"] and computes_need_external_bridge)
-  with_items:
     - "{{ neutron_external_interface.split(',') }}"
