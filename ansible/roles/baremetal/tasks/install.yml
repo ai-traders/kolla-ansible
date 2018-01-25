@@ -35,6 +35,11 @@
   with_items: "{{ debian_pkg_install }}"
   when: ansible_os_family == 'Debian'
 
+- name: Install docker apt package
+  package: name=docker-engine state=present
+  become: True
+  when: docker_daemon_reconfigure
+
 - name: Install deltarpm packages
   package: name={{item}} state=installed
   become: True
