@@ -5,6 +5,7 @@
   command: route add default gw 192.168.200.1
 - name: mount tmpfs for ansible transfers
   command: mount -t tmpfs -o size=32M tmpfs /root/.ansible
+  when: in_docker
 # NOTE: raw install is required to support cloud images which do not have python installed
 - name: "Install python2 and python-simplejson"
   become: True
