@@ -1,6 +1,7 @@
 ---
 - name: deconfigure route to internet via data net
   command: route del default
+  ignore_errors: true
 - name: configure route to internet via management
   command: route add default gw 192.168.200.1
 - name: mount tmpfs for ansible transfers
