@@ -1,0 +1,16 @@
+[Unit]
+Description=move-ips
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# if this is set to no, then immediatelly after successful ExecStart command is
+# invoked, the ExecStop command is invoked
+RemainAfterExit=yes
+ExecStart=
+ExecStart=/usr/sbin/move-ips
+# only Restart=no is allowed for Type=oneshot services
+
+[Install]
+WantedBy=multi-user.target

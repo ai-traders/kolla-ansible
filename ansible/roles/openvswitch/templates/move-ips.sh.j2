@@ -1,0 +1,35 @@
+#!/bin/bash
+
+eths=( {% for eth in neutron_external_interface.split(',') %}{{ eth }} {% endfor %} )
+
+work=1
+while [ $work == 1 ]
+do
+sleep 1
+for eth in "${eths[@]}"
+do
+   work=0
+   bridge="br-$eth"
+   if ifconfig $eth ; then
+      if ifconfig $bridge ; then
+	       ip=$(ifconfig $eth | awk '/inet addr/{print substr($2,6)}')
+         if [ -z "$ip" ];
+            then echo "$eth has no IP, seems to be configured already";
+         else
+            echo "Moving IP $ip from $eth to $bridge";
+            ifconfig $bridge $ip/24 up
+            ifconfig $eth 0.0.0.0 up
+         fi
+      else
+         echo "Bridge $bridge does not exist yet"
+	 work=1
+      fi
+   else
+      echo "Interface $eth does not exist! Invalid config"
+      exit 5
+   fi
+done
+
+done
+
+exit 0
