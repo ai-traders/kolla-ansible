@@ -17,8 +17,11 @@ do
             then echo "$eth has no IP, seems to be configured already";
          else
             echo "Moving IP $ip from $eth to $bridge";
+            mtu=$(ifconfig $eth | grep -oP '(?<=MTU:)[0-9]*')
             ifconfig $bridge $ip/24 up
             ifconfig $eth 0.0.0.0 up
+            ifconfig $bridge mtu $mtu
+            echo "Bridge MTU=$mtu"
          fi
       else
          echo "Bridge $bridge does not exist yet"
