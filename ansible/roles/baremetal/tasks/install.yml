@@ -61,6 +61,12 @@
   pip: name=docker state=latest
   become: True
 
+- name: Install wait for docker script
+  template:
+    src: docker-wait.sh
+    dest: /usr/sbin/docker-wait
+    mode: 0755
+
 - name: Remove packages
   package: name={{item}} state=absent
   with_items: "{{ ubuntu_pkg_removals }}"

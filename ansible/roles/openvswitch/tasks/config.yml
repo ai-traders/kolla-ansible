@@ -74,17 +74,17 @@
       or (inventory_hostname in groups["compute"] and computes_need_external_bridge)
 # For hdind docker hosts
 - file:
-    path: /etc/services.d/move-ips
+    path: /etc/services.d/dind-starter
     state: directory
     mode: 0755
   when:
     - in_docker
     - inventory_hostname in groups["network"]
       or (inventory_hostname in groups["compute"] and computes_need_external_bridge)
-- name: setup move-ips s6 service
+- name: setup dind-starter s6 service
   template:
-    src: move-ips-s6.j2
-    dest: /etc/services.d/move-ips/run
+    src: dind-starter-s6.j2
+    dest: /etc/services.d/dind-starter/run
   when:
     - in_docker
     - inventory_hostname in groups["network"]

@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+# wait for docker socket, if does not start, then abort and exit
+/usr/sbin/docker-wait
+
+echo "Starting networking containers"
+docker start neutron_openvswitch_agent openvswitch_db openvswitch_vswitchd
+
+echo "Running OVS cleanup and rebuilding bridges"
+docker exec neutron_openvswitch_agent neutron-ovs-cleanup --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini --ovs_all_ports
+
+set +e
+{% for eth in neutron_external_interface.split(',') %}
+docker exec openvswitch_db ovs-vsctl del-port br-{{ eth }} {{ eth }}
+docker exec openvswitch_db ovs-vsctl del-br br-{{ eth }}
+docker exec openvswitch_db ovs-vsctl add-br br-{{ eth }}
+{% endfor %}
+set -e
+
+echo "Adding eth ports to bridges"
+{% for eth in neutron_external_interface.split(',') %}
+docker exec openvswitch_db ovs-vsctl add-port br-{{ eth }} {{ eth }}
+{% endfor %}
+
+/usr/sbin/move-ips
+
+echo "Starting all kolla containers"
+{% raw %}
+containers_to_start=$(docker ps --filter "label=kolla_version" --format "{{.Names}}" -a)
+{% endraw %}
+docker start $containers_to_start
+
+while true; do
+sleep 1
+done
