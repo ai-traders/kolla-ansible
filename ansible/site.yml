@@ -35,6 +35,8 @@
   hosts: all
   serial: '{{ serial|default("0") }}'
   gather_facts: false
+  tags:
+    - always
   tasks:
     - name: Find management interface
       vars:

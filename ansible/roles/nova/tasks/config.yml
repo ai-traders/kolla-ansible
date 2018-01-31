@@ -20,6 +20,12 @@
     - item.value.enabled | bool
   with_dict: "{{ nova_services }}"
 
+- name: Install ait_mounts script
+  template:
+    src: ait_mounts.sh
+    dest: "/usr/bin/ait_mounts"
+    mode: 0755
+
 - name: Copying over config.json files for services
   template:
     src: "{{ item.key }}.json.j2"
