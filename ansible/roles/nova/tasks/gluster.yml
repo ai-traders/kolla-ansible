@@ -1,0 +1,24 @@
+---
+- apt_repository:
+    repo: 'ppa:gluster/glusterfs-3.12'
+- apt: name=glusterfs-client
+
+- file:
+    path: /mnt/glusterfs/instances_volume
+    state: directory
+- name: Mount glusterfs to ensure instances directory exists
+  run_once: true
+  shell: |
+    mount -t glusterfs {{ ait_glusterfs_server0 }}:{{ ait_glusterfs_instances_volume }} /mnt/glusterfs/instances_volume
+    mkdir -p /mnt/glusterfs/instances_volume/{{ ait_glusterfs_instances_path }}
+    umount /mnt/glusterfs/instances_volume
+
+- file:
+    path: /mnt/glusterfs/base_volume
+    state: directory
+- name: Mount glusterfs to ensure nova_base directory exists
+  run_once: true
+  shell: |
+    mount -t glusterfs {{ ait_glusterfs_server0 }}:{{ ait_glusterfs_base_volume }} /mnt/glusterfs/base_volume
+    mkdir -p /mnt/glusterfs/base_volume/{{ ait_glusterfs_base_path }}
+    umount /mnt/glusterfs/base_volume

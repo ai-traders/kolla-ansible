@@ -18,6 +18,9 @@
 - include: register.yml
   when: inventory_hostname in groups['nova-api']
 
+- include: gluster.yml
+  when: ait_nova_compute_type == 'p'
+
 - include: config.yml
 
 - include: config-nova-fake.yml

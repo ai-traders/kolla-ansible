@@ -569,6 +569,18 @@ nova_backend_ceph: "{{ enable_ceph }}"
 nova_backend: "{{ 'rbd' if nova_backend_ceph | bool else 'default' }}"
 # Valid options are [ kvm, qemu, vmware ]
 nova_compute_virt_type: "kvm"
+ait_nova_compute_type: p
+
+# AIT GlusterFS
+ait_glusterfs_server0: glusterfs-server-0
+ait_glusterfs_server1: glusterfs-server-1
+#ait_glusterfs_instances_volume: required
+#ait_glusterfs_base_volume: required
+ait_glusterfs_instances_path: instances
+ait_glusterfs_base_path: nova_base
+ait_nova_instances_mount: "-o backupvolfile-server={{ ait_glusterfs_server1 }}:{{ ait_glusterfs_instances_volume }}/{{ ait_glusterfs_instances_path }} {{ ait_glusterfs_server0 }}:{{ ait_glusterfs_instances_volume }}/{{ ait_glusterfs_instances_path }}"
+ait_nova_instances_base_mount: "-o backupvolfile-server={{ ait_glusterfs_server1 }}:{{ ait_glusterfs_base_volume }}/{{ ait_glusterfs_base_path }} {{ ait_glusterfs_server0 }}:{{ ait_glusterfs_base_volume }}/{{ ait_glusterfs_base_path }}"
+
 
 #######################
 # Murano options
