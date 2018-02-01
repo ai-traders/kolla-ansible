@@ -5,9 +5,14 @@ glance_services:
   glance-api:
     container_name: glance_api
     group: glance-api
+    privileged: True
     enabled: true
     image: "{{ glance_api_image_full }}"
+    environment:
+      AIT_GLANCE_IMAGES_MOUNT_OPTS: "{{ ait_glance_images_mount }}"
     volumes:
+      - "/dev/:/dev/"
+      - "/usr/bin/ait_mounts:/usr/bin/ait_mounts:ro"
       - "{{ node_config_directory }}/glance-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "{{ glance_file_datadir_volume }}:/var/lib/glance/"

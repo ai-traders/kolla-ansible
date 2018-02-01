@@ -576,11 +576,14 @@ ait_glusterfs_server0: glusterfs-server-0
 ait_glusterfs_server1: glusterfs-server-1
 #ait_glusterfs_instances_volume: required
 #ait_glusterfs_base_volume: required
+#ait_glusterfs_glance_images_volume: required
 ait_glusterfs_instances_path: instances
 ait_glusterfs_base_path: nova_base
+ait_glusterfs_glance_path: images
+
 ait_nova_instances_mount: "-o backupvolfile-server={{ ait_glusterfs_server1 }}:{{ ait_glusterfs_instances_volume }}/{{ ait_glusterfs_instances_path }} {{ ait_glusterfs_server0 }}:{{ ait_glusterfs_instances_volume }}/{{ ait_glusterfs_instances_path }}"
 ait_nova_instances_base_mount: "-o backupvolfile-server={{ ait_glusterfs_server1 }}:{{ ait_glusterfs_base_volume }}/{{ ait_glusterfs_base_path }} {{ ait_glusterfs_server0 }}:{{ ait_glusterfs_base_volume }}/{{ ait_glusterfs_base_path }}"
-
+ait_glance_images_mount: "-o backupvolfile-server={{ ait_glusterfs_server1 }}:{{ ait_glusterfs_glance_images_volume }}/{{ ait_glusterfs_glance_path }} {{ ait_glusterfs_server0 }}:{{ ait_glusterfs_glance_images_volume }}/{{ ait_glusterfs_glance_path }}"
 
 #######################
 # Murano options

@@ -12,7 +12,9 @@
     common_options: "{{ docker_common_options }}"
     name: "{{ service.container_name }}"
     image: "{{ service.image }}"
+    environment: "{{ service.environment }}"
     volumes: "{{ service.volumes }}"
+    privileged: "{{ service.privileged }}"
   when:
     - action != "config"
     - inventory_hostname in glance_api_hosts
@@ -45,4 +47,3 @@
       or glance_conf.changed | bool
       or policy_json.changed | bool
       or glance_registry_container.changed | bool
-

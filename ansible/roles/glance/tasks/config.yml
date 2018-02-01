@@ -9,6 +9,14 @@
     - item.value.enabled | bool
   with_dict: "{{ glance_services }}"
 
+- name: Install ait_mounts script
+  template:
+    src: ait_mounts.sh.j2
+    dest: "/usr/bin/ait_mounts"
+    mode: 0755
+  notify:
+    - Restart glance-api container
+
 - name: Copying over config.json files for services
   template:
     src: "{{ item.key }}.json.j2"

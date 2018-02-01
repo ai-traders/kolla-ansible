@@ -1,0 +1,16 @@
+- apt_repository:
+    repo: 'ppa:gluster/glusterfs-3.12'
+- apt: name=glusterfs-client
+
+- file:
+    path: "/mnt/glusterfs/{{ ait_glusterfs_glance_images_volume }}"
+    state: directory
+- name: Mount glusterfs to ensure glance images directory exists
+  run_once: true
+  vars:
+    vol: "{{ ait_glusterfs_glance_images_volume }}"
+    path: "{{ ait_glusterfs_glance_images_volume }}/{{ ait_glusterfs_glance_path }}"
+  shell: |
+    mount -t glusterfs {{ ait_glusterfs_server0 }}:{{ vol }} /mnt/glusterfs/{{ vol }}
+    mkdir -p /mnt/glusterfs/{{ path }}
+    umount /mnt/glusterfs/{{ vol }}
