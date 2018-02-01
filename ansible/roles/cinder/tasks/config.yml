@@ -40,6 +40,15 @@
     - service.enabled | bool
   notify:
     - Restart cinder-api container
+# glusterfs_ expected at {{ node_config_directory }}/
+
+- name: Install gluster volume config
+  vars:
+    vol: "{{ item }}"
+  template:
+    src: glusterfs_mount.j2
+    dest: "{{ node_config_directory }}/glusterfs_{{ vol }}"
+  with_items: "{{ ait_glusterfs_cinder_volumes }}"
 
 - name: Copying over cinder.conf
   vars:
