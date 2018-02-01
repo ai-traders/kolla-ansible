@@ -48,6 +48,8 @@
     src: glusterfs_mount.j2
     dest: "{{ node_config_directory }}/cinder-volume/glusterfs_{{ vol }}"
   with_items: "{{ ait_glusterfs_cinder_volumes }}"
+  notify:
+    - Restart cinder-volume container
 
 - name: Copying over cinder.conf
   vars:

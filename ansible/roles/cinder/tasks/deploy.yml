@@ -17,6 +17,9 @@
 - include: register.yml
   when: inventory_hostname in groups['cinder-api']
 
+- include: gluster.yml
+  when: (cinder_backend_glusterfs | bool)
+
 - include: config.yml
   when: inventory_hostname in groups['cinder-api'] or
         inventory_hostname in groups['cinder-volume'] or

@@ -1,0 +1,18 @@
+- apt_repository:
+    repo: 'ppa:gluster/glusterfs-3.12'
+- apt: name=glusterfs-client
+
+- file:
+    path: "/mnt/glusterfs/{{ item }}"
+    state: directory
+  with_items: "{{ ait_glusterfs_cinder_volumes }}"
+- name: Mount glusterfs to ensure cinder directory exists
+  run_once: true
+  vars:
+    vol: "{{ item }}"
+    path: "{{ item }}/cinder"
+  shell: |
+    mount -t glusterfs {{ ait_glusterfs_server0 }}:{{ vol }} /mnt/glusterfs/{{ vol }}
+    mkdir -p /mnt/glusterfs/{{ vol }}/cinder
+    umount /mnt/glusterfs/{{ vol }}
+  with_items: "{{ ait_glusterfs_cinder_volumes }}"
