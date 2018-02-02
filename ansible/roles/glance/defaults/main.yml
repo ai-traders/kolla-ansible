@@ -12,7 +12,7 @@ glance_services:
       AIT_GLANCE_IMAGES_MOUNT_OPTS: "{{ ait_glance_images_mount }}"
     volumes:
       - "/dev/:/dev/"
-      - "/usr/bin/ait_mounts:/usr/bin/ait_mounts:ro"
+      - "/var/ait/scripts/glance_mounts:/usr/bin/ait_mounts:ro"
       - "{{ node_config_directory }}/glance-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "{{ glance_file_datadir_volume }}:/var/lib/glance/"

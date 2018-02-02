@@ -14,7 +14,7 @@ nova_services:
       AIT_NOVA_INSTANCES_MOUNT_OPTS: "{{ ait_nova_instances_mount }}"
       AIT_NOVA_INSTANCES_BASE_MOUNT_OPTS: "{{ ait_nova_instances_base_mount }}"
     volumes:
-      - "/usr/bin/ait_mounts:/usr/bin/ait_mounts:ro"
+      - "/var/ait/scripts/nova_mounts:/usr/bin/ait_mounts:ro"
       - "{{ node_config_directory }}/nova-libvirt/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/lib/modules:/lib/modules:ro"
@@ -123,7 +123,7 @@ nova_services:
       AIT_NOVA_INSTANCES_MOUNT_OPTS: "{{ ait_nova_instances_mount }}"
       AIT_NOVA_INSTANCES_BASE_MOUNT_OPTS: "{{ ait_nova_instances_base_mount }}"
     volumes:
-      - "/usr/bin/ait_mounts:/usr/bin/ait_mounts:ro"
+      - "/var/ait/scripts/nova_mounts:/usr/bin/ait_mounts:ro"
       - "{{ node_config_directory }}/nova-compute/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/lib/modules:/lib/modules:ro"

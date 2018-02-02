@@ -9,10 +9,13 @@
     - item.value.enabled | bool
   with_dict: "{{ glance_services }}"
 
+- file:
+    path: /var/ait/scripts
+    state: directory
 - name: Install ait_mounts script
   template:
     src: ait_mounts.sh.j2
-    dest: "/usr/bin/ait_mounts"
+    dest: "/var/ait/scripts/glance_mounts"
     mode: 0755
   notify:
     - Restart glance-api container
