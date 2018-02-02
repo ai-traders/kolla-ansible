@@ -36,6 +36,8 @@ if [ $AIT_NOVA_COMPUTE_TYPE == "p" ]; then
       check_mounted "/var/lib/nova/instances"
       check_mounted "/var/lib/nova/instances/_base"
     fi
+elif [ $AIT_NOVA_COMPUTE_TYPE == "w" ]; then
+  echo "Nova compute worker type, expecting LVM group to be present"
 else
   echo "AIT_NOVA_COMPUTE_TYPE must be set to p,w or v. Got $AIT_NOVA_COMPUTE_TYPE"
   exit 4

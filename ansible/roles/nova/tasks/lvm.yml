@@ -1,0 +1,26 @@
+- name: Install LVM tools
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - lvm2
+    - thin-provisioning-tools
+
+- name: Check if disk device is already used
+  command: "wipefs {{ ait_nova_worker_disk }}"
+  register: wipefs
+
+- name: Add disk device to LVM
+  tags:
+    - danger
+  command: "pvcreate {{ ait_nova_worker_disk }}"
+  when: "wipefs.stdout == ''"
+
+- name: Create volume group
+  tags:
+    - danger
+  vars:
+    device: "{{ ait_nova_worker_disk }}"
+    vg: "nova_{{ inventory_hostname }}"
+  lvg:
+    pvs: "{{ device }}"
+    vg: "{{ vg }}"

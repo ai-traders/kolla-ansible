@@ -180,6 +180,11 @@ rbd_secret_uuid = {{ rbd_secret_uuid }}
 virt_type = {{ nova_compute_virt_type }}
 {% endif %}
 
+{% if ait_nova_compute_type == 'w' %}
+images_type = lvm
+images_volume_group = nova_{{ inventory_hostname }}
+{% endif %}
+
 {% if nova_compute_virt_type == "vmware" %}
 [vmware]
 host_ip = {{ vmware_vcenter_host_ip }}

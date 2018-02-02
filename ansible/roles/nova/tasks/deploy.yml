@@ -15,11 +15,20 @@
     - not enable_ceph | bool and nova_backend == "rbd"
     - inventory_hostname in groups['compute']
 
+- name: Install ait_mounts script
+  template:
+    src: ait_mounts.sh
+    dest: "/usr/bin/ait_mounts"
+    mode: 0755
+
 - include: register.yml
   when: inventory_hostname in groups['nova-api']
 
 - include: gluster.yml
   when: ait_nova_compute_type == 'p'
+
+- include: lvm.yml
+  when: ait_nova_compute_type == 'w'
 
 - include: config.yml
 
