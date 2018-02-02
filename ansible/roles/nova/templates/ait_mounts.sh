@@ -38,6 +38,16 @@ if [ $AIT_NOVA_COMPUTE_TYPE == "p" ]; then
     fi
 elif [ $AIT_NOVA_COMPUTE_TYPE == "w" ]; then
   echo "Nova compute worker type, expecting LVM group to be present"
+  if [ -z "$AIT_NOVA_INSTANCES_BASE_MOUNT_OPTS" ];
+    then echo "AIT_NOVA_INSTANCES_BASE_MOUNT_OPTS is not set";
+    exit 5
+  else
+    mkdir -p /var/lib/nova/instances/_base
+    mount -t glusterfs $AIT_NOVA_INSTANCES_BASE_MOUNT_OPTS /var/lib/nova/instances/_base
+    chown nova:nova /var/lib/nova/instances/_base
+    
+    check_mounted "/var/lib/nova/instances/_base"
+  fi
 else
   echo "AIT_NOVA_COMPUTE_TYPE must be set to p,w or v. Got $AIT_NOVA_COMPUTE_TYPE"
   exit 4
