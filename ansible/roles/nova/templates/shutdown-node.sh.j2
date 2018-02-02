@@ -1,0 +1,51 @@
+#!/bin/bash
+
+docker stop nova_compute
+
+# Check if libvirt is running
+libvirt_container=$(docker ps --filter 'name=nova_libvirt' --filter 'status=running' -q)
+if [ -z "$libvirt_container" ] ; then
+	echo "nova_libvirt container is not running"
+else
+  VIRSH="docker exec nova_libvirt /usr/bin/virsh"
+  TIMEOUT={{ vm_shutdown_timeout }}
+
+  $VIRSH list --all
+  if [ $? != 0 ]; then
+  	echo "Cannot talk to libvirt"
+  	exit 1
+  fi
+
+  domains=$($VIRSH list --state-running --name | grep 'instance-')
+  if [ -z "$domains" ] ; then
+  	echo "No running guest VMs"
+  	exit 0
+  fi
+  for d in $domains ; do
+  	$VIRSH -q shutdown $d > /dev/null
+  	echo "Sent shutdown signal to $d"
+  done
+
+  echo "Waiting for VMs to stop"
+
+  i=0
+  while [ $i -lt $TIMEOUT ] ; do
+  	if $VIRSH list --state-running --name | grep 'instance-' ; then
+  		i=$(($i+1))
+  		echo "."
+  		sleep 1
+  	else
+      docker stop $(docker ps -a -q)
+  		exit 0
+  	fi
+  done
+
+  echo "Timeout reached, forcing VMs to poweroff"
+
+  for d in $domains ; do
+          $VIRSH destroy $d > /dev/null
+          echo "Destroyed $d"
+  done
+fi
+
+docker stop $(docker ps -a -q)

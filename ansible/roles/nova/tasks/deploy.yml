@@ -18,6 +18,13 @@
 - file:
     path: /var/ait/scripts
     state: directory
+
+- name: Install shutdown-node script
+  template:
+    src: shutdown-node.sh.j2
+    dest: "/usr/sbin/shutdown-node"
+    mode: 0755
+
 - name: Install ait_mounts script
   template:
     src: ait_mounts.sh
