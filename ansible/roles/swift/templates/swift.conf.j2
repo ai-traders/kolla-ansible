@@ -1,3 +1,9 @@
 [swift-hash]
 swift_hash_path_suffix = {{ swift_hash_path_suffix }}
 swift_hash_path_prefix = {{ swift_hash_path_prefix }}
+
+{% if swiftonfile | bool %}
+[storage-policy:0]
+name = swiftonfile
+default = yes
+{% endif %}

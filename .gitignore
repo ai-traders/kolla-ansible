@@ -54,3 +54,4 @@ ansible/*.retry
 # Others
 .DS_Store
 .vimrc
+/ansible/roles/swift/files/config.stage/kolla/swift

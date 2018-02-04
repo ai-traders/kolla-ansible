@@ -525,6 +525,13 @@ panko_database_type: "mysql"
 gnocchi_backend_storage: "{{ 'ceph' if enable_ceph|bool else 'file' }}"
 
 
+#################
+# Swift options
+#################
+swift_log_level: INFO
+swiftonfile: "no"
+swift_container_restarts: never
+
 #################################
 # Cinder options
 #################################

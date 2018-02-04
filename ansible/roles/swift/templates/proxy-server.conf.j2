@@ -6,7 +6,7 @@ log_udp_host = {{ api_interface_address }}
 log_udp_port = {{ fluentd_syslog_port }}
 log_name = {{ service_name }}
 log_facility = LOG_LOCAL0
-log_level = INFO
+log_level = {{ swift_log_level }}
 workers = {{ openstack_service_workers }}
 
 [pipeline:main]

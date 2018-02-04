@@ -1,0 +1,26 @@
+#!/bin/bash
+
+function check_mounted {
+  dir=$1
+  if ! mountpoint -q -- "$dir" ; then
+     echo "$dir is not mounted. Most recent logs:"
+     tail /var/log/glusterfs/*.log
+     exit 2
+  fi
+}
+
+if mount -a --fstab /etc/fstab
+then
+  set -e
+  check_mounted "{{ swift_devices_mount_point }}/{{ ait_glusterfs_swift_volume }}"
+
+  swift_containers=$(docker ps -a --filter 'name=swift' -q)
+  docker start $swift_containers
+else
+      echo "mount -a failed"
+      exit 1
+fi
+
+while true; do
+sleep 1
+done
