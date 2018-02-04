@@ -531,6 +531,7 @@ gnocchi_backend_storage: "{{ 'ceph' if enable_ceph|bool else 'file' }}"
 swift_log_level: INFO
 swiftonfile: "no"
 swift_container_restarts: never
+swift_delay_auth_decision: "no"
 
 #################################
 # Cinder options
