@@ -65,7 +65,7 @@
 
 - name: Checking Swift ring files
   run_once: True
-  local_action: stat path="{{ node_custom_config }}/swift/{{ item }}"
+  local_action: stat path="/ide/work/{{ node_custom_config }}/swift/{{ item }}"
   register: swift_ring_files
   with_items:
     - "account.builder"

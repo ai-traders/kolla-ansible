@@ -142,7 +142,7 @@
 
 - name: Copying over Swift ring files
   copy:
-    src: "{{ node_custom_config }}/swift/{{ item }}"
+    src: "/ide/work/{{ node_custom_config }}/swift/{{ item }}"
     dest: "{{ node_config_directory }}/swift/{{ item }}"
     backup: yes
   with_items:
