@@ -38,7 +38,7 @@ workers = {{ openstack_service_workers }}
 
 {% if service_name == 'designate-mdns' %}
 [service:mdns]
-listen = {{ hostvars[inventory_hostname]['ansible_' + dns_interface]['ipv4']['address'] }}:{{ designate_mdns_port }}
+listen = {{ hostvars[inventory_hostname]['designate_listen_address'] }}:{{ designate_mdns_port }}
 workers = {{ openstack_service_workers }}
 {% endif %}
 
