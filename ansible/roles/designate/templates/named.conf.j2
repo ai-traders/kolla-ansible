@@ -2,6 +2,7 @@ include "/etc/rndc.key";
 options {
         listen-on port {{ designate_bind_port }} { {{ hostvars[inventory_hostname]['ansible_' + hostvars[inventory_hostname]['api_interface']]['ipv4']['address'] }}; };
         directory       "/var/lib/named";
+        allow-notify { {% for worker in groups['designate-worker'] %}{{ hostvars[worker]['ansible_' + hostvars[worker]['api_interface']]['ipv4']['address'] }};{% endfor %} };
         allow-new-zones yes;
         dnssec-validation auto;
         auth-nxdomain no;
