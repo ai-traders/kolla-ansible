@@ -52,6 +52,7 @@
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4'] is defined
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4']['network'] == management_network
         - not 'dbr' in item
+        - not 'eth3' in item
       with_items: "{{ ansible_interfaces }}"
     - name: Show management interfaces
       debug:
@@ -70,6 +71,7 @@
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4'] is defined
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4']['network'] == data_network
         - not 'dbr' in item
+        - not 'eth3' in item
       with_items: "{{ ansible_interfaces }}"
     - name: Show data interfaces
       debug:
