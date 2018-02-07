@@ -46,7 +46,7 @@
   vars:
     service: "{{ octavia_services['octavia-worker'] }}"
   copy:
-    src: "{{ node_custom_config }}/octavia/{{ item }}"
+    src: "/ide/work/{{ node_custom_config }}/octavia/{{ item }}"
     dest: "{{ node_config_directory }}/octavia-worker/{{ item }}"
   register: octavia_worker_certificate
   when:
@@ -63,7 +63,7 @@
   vars:
     service: "{{ octavia_services['octavia-housekeeping'] }}"
   copy:
-    src: "{{ node_custom_config }}/octavia/{{ item }}"
+    src: "/ide/work/{{ node_custom_config }}/octavia/{{ item }}"
     dest: "{{ node_config_directory }}/octavia-housekeeping/{{ item }}"
   register: octavia_housekeeping_certificate
   when:
@@ -80,7 +80,7 @@
   vars:
     service: "{{ octavia_services['octavia-health-manager'] }}"
   copy:
-    src: "{{ node_custom_config }}/octavia/{{ item }}"
+    src: "/ide/work/{{ node_custom_config }}/octavia/{{ item }}"
     dest: "{{ node_config_directory }}/octavia-health-manager/{{ item }}"
   register: octavia_health_manager_certificate
   when:
