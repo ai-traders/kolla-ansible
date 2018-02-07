@@ -124,6 +124,10 @@ bifrost_network_interface: "{{ network_interface }}"
 dns_interface: "{{ network_interface }}"
 tunnel_interface_address: "{{ hostvars[inventory_hostname]['ansible_' + tunnel_interface]['ipv4']['address'] }}"
 
+designate_bind_forwarders:
+  - 8.8.8.8
+  - 4.4.4.4
+
 # Valid options are [ openvswitch, linuxbridge, vmware_nsxv, vmware_dvs, opendaylight ]
 neutron_plugin_agent: "openvswitch"
 

@@ -7,8 +7,15 @@ options {
         dnssec-validation auto;
         auth-nxdomain no;
         request-ixfr no;
-        recursion no;
+        recursion yes;
         minimal-responses yes;
+
+        forward only;
+        forwarders {
+        {% for forwarder in designate_bind_forwarders %}
+          {{ forwarder }};
+        {% endfor %}
+	      };
 };
 
 controls {
