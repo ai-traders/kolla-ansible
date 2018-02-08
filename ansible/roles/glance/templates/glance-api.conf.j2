@@ -48,6 +48,8 @@ default_store = vsphere
 default_store = rbd
 {% elif enable_swift | bool and glance_backend_swift | bool %}
 default_store = swift+http
+{% elif glance_backend_sheepdog | bool %}
+default_store = sheepdog
 {% else %}
 default_store = file
 filesystem_store_datadir = /var/lib/glance/images/
@@ -55,6 +57,11 @@ filesystem_store_datadir = /var/lib/glance/images/
 
 {% if glance_store_backends %}
 stores = {{ glance_store_backends|map(attribute='name')|join(',') }}
+{% endif %}
+
+{% if glance_backend_sheepdog | bool %}
+sheepdog_store_address = {{ sheepdog_store_address }}
+sheepdog_store_port = {{ sheepdog_store_port }}
 {% endif %}
 
 {% if enable_ceph | bool and glance_backend_ceph | bool %}

@@ -585,6 +585,10 @@ nova_backend: "{{ 'rbd' if nova_backend_ceph | bool else 'default' }}"
 nova_compute_virt_type: "kvm"
 ait_nova_compute_type: p
 
+# sheepdog
+sheepdog_store_address: 127.0.0.1
+sheepdog_store_port: 7000
+
 # AIT GlusterFS
 ait_glusterfs_server0: glusterfs-server-0
 ait_glusterfs_server1: glusterfs-server-1
