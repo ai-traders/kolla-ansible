@@ -50,6 +50,7 @@
   with_items: "{{ ait_glusterfs_cinder_volumes }}"
   notify:
     - Restart cinder-volume container
+  when: cinder_backend_glusterfs | bool    
 
 - name: Copying over cinder.conf
   vars:

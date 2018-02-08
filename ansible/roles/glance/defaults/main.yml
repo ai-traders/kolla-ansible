@@ -9,6 +9,7 @@ glance_services:
     enabled: true
     image: "{{ glance_api_image_full }}"
     environment:
+      AIT_GLANCE_IMAGES_GLUSTERFS: "{% if glance_backend_glusterfs | bool %}yes{% endif %}"
       AIT_GLANCE_IMAGES_MOUNT_OPTS: "{{ ait_glance_images_mount }}"
     volumes:
       - "/dev/:/dev/"

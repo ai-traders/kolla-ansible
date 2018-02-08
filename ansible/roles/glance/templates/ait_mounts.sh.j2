@@ -14,13 +14,17 @@ function check_mounted {
   fi
 }
 
-echo "AIT_GLANCE_IMAGES_MOUNT_OPTS=$AIT_GLANCE_IMAGES_MOUNT_OPTS"
-if [ -z "$AIT_GLANCE_IMAGES_MOUNT_OPTS" ];
-  then echo "AIT_GLANCE_IMAGES_MOUNT_OPTS is not set";
-  exit 5
-fi
+if [ -z $AIT_GLANCE_IMAGES_GLUSTERFS ]; then
+  echo "Glance backend is NOT in glusterfs"
+else
+  echo "AIT_GLANCE_IMAGES_MOUNT_OPTS=$AIT_GLANCE_IMAGES_MOUNT_OPTS"
+  if [ -z "$AIT_GLANCE_IMAGES_MOUNT_OPTS" ];
+    then echo "AIT_GLANCE_IMAGES_MOUNT_OPTS is not set";
+    exit 5
+  fi
 
-mkdir -p /var/lib/glance/images
-mount -t glusterfs $AIT_GLANCE_IMAGES_MOUNT_OPTS /var/lib/glance/images
-chown glance:glance /var/lib/glance/images
-check_mounted "/var/lib/glance/images"
+  mkdir -p /var/lib/glance/images
+  mount -t glusterfs $AIT_GLANCE_IMAGES_MOUNT_OPTS /var/lib/glance/images
+  chown glance:glance /var/lib/glance/images
+  check_mounted "/var/lib/glance/images"
+fi

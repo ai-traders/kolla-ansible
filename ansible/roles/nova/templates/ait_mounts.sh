@@ -45,9 +45,11 @@ elif [ $AIT_NOVA_COMPUTE_TYPE == "w" ]; then
     mkdir -p /var/lib/nova/instances/_base
     mount -t glusterfs $AIT_NOVA_INSTANCES_BASE_MOUNT_OPTS /var/lib/nova/instances/_base
     chown nova:nova /var/lib/nova/instances/_base
-    
+
     check_mounted "/var/lib/nova/instances/_base"
   fi
+elif [ $AIT_NOVA_COMPUTE_TYPE == "dummy" ]; then
+  echo "Dummy nova-compute - no storage"
 else
   echo "AIT_NOVA_COMPUTE_TYPE must be set to p,w or v. Got $AIT_NOVA_COMPUTE_TYPE"
   exit 4
