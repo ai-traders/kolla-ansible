@@ -97,22 +97,16 @@
   become: True
   when: ansible_os_family == 'Debian'
 
-- name: Enable docker repo apt
-  template:
-    src: docker_apt_repo.j2
-    dest: /etc/apt/sources.list.d/docker.list
-  become: True
-  when: ansible_os_family == 'Debian'
-
-- name: Install docker apt gpg key
+- name: add docker gpg apt key
   apt_key:
-    url: "{{ docker_apt_url }}/gpg"
-    id: "{{ docker_apt_key_id }}"
+    url: https://download.docker.com/linux/ubuntu/gpg
     state: present
-  become: True
-  when:
-    - ansible_os_family == 'Debian'
-    - ansible_distribution == 'Ubuntu'
+- name: add docker debian apt repository
+  copy:
+    content: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+    dest: /etc/apt/sources.list.d/docker.list
+- name: apt update
+  apt: update_cache=yes
 
 - name: Ensure yum repos directory exists
   file: path=/etc/yum.repos.d/ state=directory recurse=yes

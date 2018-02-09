@@ -1,23 +1,39 @@
 ---
-- name: Ensure docker service directory exists
+- name: create docker config directory
   file:
-    path=/etc/systemd/system/docker.service.d
-    state=directory
-    recurse=yes
-  become: True
+    path: /etc/docker
+    state: directory
+    mode: 0755
+  when: docker_daemon_reconfigure | bool
 
-- name: Configure docker service
-  become: True
+- name: configure docker daemon.json
+  vars:
+    docker_daemon_options:
+      "insecure-registries":
+        - "{{ docker_registry }}"
+  copy:
+    content: "{{ docker_daemon_options | to_nice_json }}"
+    dest: "/etc/docker/daemon.json"
+  when: docker_daemon_reconfigure | bool
+
+- name: create systemd drop-in directory
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+    mode: 0755
+  when:
+    - docker_daemon_reconfigure | bool
+    - not in_docker
+
+- name: ensure MountFlags=shared
   template:
-    src=docker_systemd_service.j2
-    dest=/etc/systemd/system/docker.service.d/kolla.conf
-  register: docker_configured
-  when: docker_daemon_reconfigure
-
-- name: Reload docker service file
-  become: True
-  command: systemctl daemon-reload
-  when: docker_daemon_reconfigure
+    src: docker_shared_mountflags.j2
+    dest: /etc/systemd/system/docker.service.d/shared.conf
+  notify:
+    - restart docker
+  when:
+    - docker_daemon_reconfigure | bool
+    - not in_docker
 
 - name: Get stat of libvirtd apparmor profile
   stat: path=/etc/apparmor.d/usr.sbin.libvirtd
@@ -43,29 +59,6 @@
     groups: docker
   become: True
   when: create_kolla_user | bool
-
-- name: Start docker
-  service:
-    name: docker
-    state: started
-  become: True
-
-- name: Restart docker
-  service:
-    name: docker
-    state: restarted
-  become: True
-  when:
-    - docker_daemon_reconfigure | bool
-    - docker_configured.changed
-
-- name: Enable docker
-  service:
-    name: docker
-    enabled: yes
-  become: True
-  when: docker_daemon_reconfigure | bool
-
 
 - name: Stop time service
   service:

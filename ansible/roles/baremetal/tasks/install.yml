@@ -36,9 +36,9 @@
   when: ansible_os_family == 'Debian'
 
 - name: Install docker apt package
-  package: name=docker-engine state=present
+  package: name=docker-ce state=present
   become: True
-  when: docker_daemon_reconfigure
+  when: docker_daemon_reconfigure | bool
 
 - name: Install deltarpm packages
   package: name={{item}} state=installed

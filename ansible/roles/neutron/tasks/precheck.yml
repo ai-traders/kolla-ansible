@@ -33,7 +33,7 @@
   changed_when: false
   failed_when: result.stdout.find('MountFlags=1048576') == -1
   when:
-    - docker_daemon_reconfigure
+    - docker_daemon_reconfigure | bool
     - (inventory_hostname in groups['neutron-dhcp-agent']
        or inventory_hostname in groups['neutron-l3-agent']
        or inventory_hostname in groups['neutron-metadata-agent'])
