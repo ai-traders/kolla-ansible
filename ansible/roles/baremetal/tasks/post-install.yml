@@ -55,13 +55,17 @@
     name: docker
     state: restarted
   become: True
-  when: docker_configured.changed
+  when:
+    - docker_daemon_reconfigure | bool
+    - docker_configured.changed
 
 - name: Enable docker
   service:
     name: docker
     enabled: yes
   become: True
+  when: docker_daemon_reconfigure | bool
+
 
 - name: Stop time service
   service:
