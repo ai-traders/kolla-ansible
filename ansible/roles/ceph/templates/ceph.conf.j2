@@ -6,11 +6,11 @@ log to stderr = false
 err to stderr = false
 
 fsid = {{ ceph_cluster_fsid }}
-mon initial members = {% for host in groups['ceph-mon'] %}{{ hostvars[host]['ansible_' + hostvars[host]['storage_interface']]['ipv4']['address'] }}{% if not loop.last %}, {% endif %}{% endfor %}
+mon initial members = {% for host in groups['ceph-mon'] %}{{ hostvars[host]['storage_address'] }}{% if not loop.last %}, {% endif %}{% endfor %}
 
-mon host = {% for host in groups['ceph-mon'] %}{{ hostvars[host]['ansible_' + hostvars[host]['storage_interface']]['ipv4']['address'] }}{% if not loop.last %}, {% endif %}{% endfor %}
+mon host = {% for host in groups['ceph-mon'] %}{{ hostvars[host]['storage_address'] }}{% if not loop.last %}, {% endif %}{% endfor %}
 
-mon addr = {% for host in groups['ceph-mon'] %}{{ hostvars[host]['ansible_' + hostvars[host]['storage_interface']]['ipv4']['address'] }}:6789{% if not loop.last %}, {% endif %}{% endfor %}
+mon addr = {% for host in groups['ceph-mon'] %}{{ hostvars[host]['storage_address'] }}:6789{% if not loop.last %}, {% endif %}{% endfor %}
 
 auth cluster required = cephx
 auth service required = cephx
@@ -30,7 +30,7 @@ mon cluster log file = /var/log/kolla/ceph/$cluster.log
 
 {% if service_name is defined and service_name == 'ceph-rgw' %}
 [client.radosgw.gateway]
-host = {{ hostvars[inventory_hostname]['ansible_' + storage_interface]['ipv4']['address'] }}
+host = {{ hostvars[inventory_hostname]['storage_address'] }}
 rgw frontends = civetweb port={{ api_interface_address }}:{{ rgw_port }}
 {% if enable_ceph_rgw_keystone | bool %}
 rgw_keystone_url = {{ admin_protocol }}://{{ kolla_internal_fqdn }}:{{ keystone_admin_port }}
