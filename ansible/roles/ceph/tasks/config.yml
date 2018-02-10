@@ -9,6 +9,15 @@
     - "ceph-osd"
     - "ceph-rgw"
 
+- file:
+    path: /var/ait/scripts
+    state: directory
+- name: Install OSD extend_start for dev
+  copy:
+    src: osd_extend_start.sh
+    dest: /var/ait/scripts/osd_extend_start
+    mode: 0755
+
 - name: Copying over config.json files for services
   template:
     src: "{{ item }}.json.j2"

@@ -12,9 +12,11 @@
     osds: "{{ (osd_lookup.stdout.split('localhost | SUCCESS => ')[1]|from_json).disks|from_json }}"
 
 - name: Mounting Ceph OSD volumes
+  vars:
+    fstype: "{% if ceph_osd_filesystem == 'bluestore' %}xfs{% else %}{{ ceph_osd_filesystem }}{% endif %}"
   mount:
     src: "UUID={{ item.fs_uuid }}"
-    fstype: "{{ ceph_osd_filesystem }}"
+    fstype: "{{ fstype }}"
     state: mounted
     name: "/var/lib/ceph/osd/{{ item['fs_uuid'] }}"
     opts: "{{ ceph_osd_mount_options }}"
@@ -43,6 +45,7 @@
     pid_mode: "host"
     privileged: True
     volumes:
+      - "/var/ait/scripts/osd_extend_start:/usr/local/bin/kolla_extend_start"
       - "{{ node_config_directory }}/ceph-osd/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/dev/:/dev/"

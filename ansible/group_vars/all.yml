@@ -638,8 +638,8 @@ ceph_target_max_objects: ""
 # Valid options are [ forward, none, writeback ]
 ceph_cache_mode: "writeback"
 
-# Valid options are [ ext4, btrfs, xfs ]
-ceph_osd_filesystem: "xfs"
+# Valid options are [ ext4, btrfs, xfs, bluestore (no FS actually) ]
+ceph_osd_filesystem: "bluestore"
 
 # Set to 'yes-i-really-really-mean-it' to force wipe disks with existing partitions for OSDs. Only
 # set if you understand the consequences!

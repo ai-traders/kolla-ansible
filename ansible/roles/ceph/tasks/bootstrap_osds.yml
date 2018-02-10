@@ -64,6 +64,7 @@
     privileged: True
     restart_policy: "never"
     volumes:
+      - "/var/ait/scripts/osd_extend_start:/usr/local/bin/kolla_extend_start"
       - "{{ node_config_directory }}/ceph-osd/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/dev/:/dev/"
