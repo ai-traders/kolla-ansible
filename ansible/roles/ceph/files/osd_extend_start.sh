@@ -77,7 +77,7 @@ if [[ "${!KOLLA_BOOTSTRAP[@]}" ]]; then
         echo "bluestore" > "${OSD_DIR}/type"
         cd ${OSD_DIR}
         BLOCK_PARTITION="${OSD_DEV}1"
-        JOURNAL_PARTITION="${OSD_DEV}2"
+        JOURNAL_PARTITION="${JOURNAL_DEV}2"
         KV_DB_DEV="${OSD_DEV}3"
         ln -s "${BLOCK_PARTITION}" block
         ln -s "${JOURNAL_PARTITION}" block.wal
@@ -121,6 +121,20 @@ if [[ "${!KOLLA_BOOTSTRAP[@]}" ]]; then
       # For sake of completeness, we set labels on KV partion and bluestore too:
       sgdisk "--change-name=${OSD_PARTITION_NUM}:KOLLA_CEPH_${OSD_ID}_BLUESTORE" "--typecode=${OSD_PARTITION_NUM}:${CEPH_OSD_TYPE_CODE}" -- "${OSD_DEV}"
       sgdisk "--change-name=${KV_PARTITION_NUM}:KOLLA_CEPH_${OSD_ID}_BLUE_KV" "--typecode=${KV_PARTITION_NUM}:${CEPH_OSD_TYPE_CODE}" -- "${OSD_DEV}"
+
+      if [[ "${OSD_FILESYSTEM}" == "bluestore" ]]; then
+          echo "Setting strict links for bluestore components"
+          mount "${OSD_PARTITION}" "${OSD_DIR}"
+          cd ${OSD_DIR}
+          BLOCK_PARTITION="/dev/disk/by-partlabel/KOLLA_CEPH_${OSD_ID}_BLUESTORE"
+          JOURNAL_PARTITION="/dev/disk/by-partlabel/KOLLA_CEPH_DATA_${OSD_ID}_J"
+          KV_DB_DEV="/dev/disk/by-partlabel/KOLLA_CEPH_${OSD_ID}_BLUE_KV"
+          ln -sf "${BLOCK_PARTITION}" block
+          ln -sf "${JOURNAL_PARTITION}" block.wal
+          ln -sf "${KV_DB_DEV}" block.db
+          cd /
+          umount "${OSD_PARTITION}"
+      fi
     else
       sgdisk "--change-name=${OSD_PARTITION_NUM}:KOLLA_CEPH_DATA_${OSD_ID}" "--typecode=${OSD_PARTITION_NUM}:${CEPH_OSD_TYPE_CODE}" -- "${OSD_DEV}"
     fi
