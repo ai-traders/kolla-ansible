@@ -32,24 +32,36 @@
   failed_when: id.rc != 0
 
 - name: Starting ceph-osd container
-  kolla_docker:
-    action: "start_container"
-    common_options: "{{ docker_common_options }}"
-    environment:
+  vars:
+    osd_id: "{{ item.0.stdout }}"
+    osd_data_part: "/dev/disk/by-partlabel/KOLLA_CEPH_DATA_{{ osd_id }}"
+    osd_journal_part: "/dev/disk/by-partlabel/KOLLA_CEPH_DATA_{{ osd_id }}_J"
+    osd_bluestore_part: "/dev/disk/by-partlabel/KOLLA_CEPH_{{ osd_id }}_BLUESTORE"
+    osd_blue_kv_part: "/dev/disk/by-partlabel/KOLLA_CEPH_{{ osd_id }}_BLUE_KV"
+    bluestore_enabled: "{% if ceph_osd_filesystem == 'bluestore' %}True{% endif %}"
+  docker_container:
+    restart_policy: "{{ docker_restart_policy }}"
+    env:
       KOLLA_CONFIG_STRATEGY: "{{ config_strategy }}"
-      OSD_ID: "{{ item.0.stdout }}"
-      JOURNAL_PARTITION: "{{ item.1.journal }}"
+      KOLLA_SERVICE_NAME: ceph-osd
+      OSD_ID: "{{ osd_id }}"
+      JOURNAL_PARTITION: "/dev/disk/by-partlabel/KOLLA_CEPH_DATA_{{ osd_id }}_J"
       TCMALLOC_MAX_TOTAL_THREAD_CACHE_BYTES: "{{ ceph_tcmalloc_tc_bytes }}"
     image: "{{ ceph_osd_image_full }}"
-    name: "ceph_osd_{{ item.0.stdout }}"
+    name: "ceph_osd_{{ osd_id }}"
+    network_mode: "host"
     pid_mode: "host"
-    privileged: True
+    privileged: False
+    devices:
+      - "{{ osd_data_part }}"
+      - "{{ osd_journal_part }}"
+      - "{% if bluestore_enabled %}{{ osd_bluestore_part }}{% endif %}"
+      - "{% if bluestore_enabled %}{{ osd_blue_kv_part }}{% endif %}"
     volumes:
       - "/var/ait/scripts/osd_extend_start:/usr/local/bin/kolla_extend_start"
       - "{{ node_config_directory }}/ceph-osd/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/dev/:/dev/"
-      - "/var/lib/ceph/osd/{{ item.1['fs_uuid'] }}:/var/lib/ceph/osd/ceph-{{ item.0.stdout }}"
+      - "/var/lib/ceph/osd/{{ item.1['fs_uuid'] }}:/var/lib/ceph/osd/ceph-{{ osd_id }}"
       - "kolla_logs:/var/log/kolla/"
   with_together:
     - "{{ id.results }}"
