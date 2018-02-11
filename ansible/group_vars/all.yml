@@ -665,7 +665,7 @@ ceph_erasure_profile: "k=4 m=2 ruleset-failure-domain=host"
 ceph_rule: "default host {{ 'indep' if ceph_pool_type == 'erasure' else 'firstn' }}"
 ceph_cache_rule: "cache host firstn"
 
-ceph_pg_num: 16
+ceph_pg_num: 8
 
 ################################################
 # VMware - OpenStack VMware support

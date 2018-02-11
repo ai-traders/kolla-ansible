@@ -16,6 +16,9 @@ auth cluster required = cephx
 auth service required = cephx
 auth client required = cephx
 
+osd pool default pg num = {{ ceph_pg_num }}
+osd pool default pgp num = {{ ceph_pg_num }}
+
 # NOTE(inc0): This line will mean that if ceph was upgraded, it will run as root
 #             until contents of /var/lib/ceph are chowned to ceph user.
 #             This change was introduced in Jewel version and we should include
