@@ -25,3 +25,9 @@
       - "{{ node_config_directory }}/ceph-mgr/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "kolla_logs:/var/log/kolla"
+
+- name: Enable Ceph dashboard
+  command: docker exec ceph_mon ceph mgr module enable dashboard
+  run_once: true
+  delegate_to: "{{ groups['ceph-mon'][0] }}"
+  changed_when: false
