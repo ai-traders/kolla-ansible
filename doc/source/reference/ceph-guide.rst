@@ -30,21 +30,21 @@ To prepare an OSD as a storage drive, execute the following operations:
 
     # <WARNING ALL DATA ON $DISK will be LOST!>
     # where $DISK is /dev/sdb or something similar
-    parted $DISK -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP 1 -1
+    parted $DISK -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_HDD_BOOTSTRAP 1 -1
 
 The following shows an example of using parted to configure ``/dev/sdb`` for
 usage with Kolla.
 
 ::
 
-    parted /dev/sdb -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP 1 -1
+    parted /dev/sdb -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_HDD_BOOTSTRAP 1 -1
     parted /dev/sdb print
     Model: VMware, VMware Virtual S (scsi)
     Disk /dev/sdb: 10.7GB
     Sector size (logical/physical): 512B/512B
     Partition Table: gpt
     Number  Start   End     Size    File system  Name                      Flags
-         1      1049kB  10.7GB  10.7GB               KOLLA_CEPH_OSD_BOOTSTRAP
+         1      1049kB  10.7GB  10.7GB               KOLLA_CEPH_OSD_HDD_BOOTSTRAP
 
 
 Using an external journal drive
@@ -63,7 +63,7 @@ Prepare the storage drive in the same way as documented above:
 
     # <WARNING ALL DATA ON $DISK will be LOST!>
     # where $DISK is /dev/sdb or something similar
-    parted $DISK -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_FOO 1 -1
+    parted $DISK -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_HDD_BOOTSTRAP_FOO 1 -1
 
 To prepare the journal external drive execute the following command:
 
@@ -71,7 +71,7 @@ To prepare the journal external drive execute the following command:
 
     # <WARNING ALL DATA ON $DISK will be LOST!>
     # where $DISK is /dev/sdc or something similar
-    parted $DISK -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_FOO_J 1 -1
+    parted $DISK -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_HDD_BOOTSTRAP_FOO_J 1 -1
 
 .. note::
 
@@ -81,7 +81,7 @@ To prepare the journal external drive execute the following command:
 
 .. note::
 
-   The partition labels ``KOLLA_CEPH_OSD_BOOTSTRAP`` and ``KOLLA_CEPH_OSD_BOOTSTRAP_J``
+   The partition labels ``KOLLA_CEPH_OSD_HDD_BOOTSTRAP`` and ``KOLLA_CEPH_OSD_HDD_BOOTSTRAP_J``
    are not working when using external journal drives. It is required to use
    suffixes (``_42``, ``_FOO``, ``_FOO42``, ..). If you want to setup only one
    storage drive with one external journal drive it is also necessary to use a suffix.
@@ -147,7 +147,7 @@ To prepare an OSD as a cache device, execute the following operations:
 
     # <WARNING ALL DATA ON $DISK will be LOST!>
     # where $DISK is /dev/sdb or something similar
-    parted $DISK -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_CACHE_BOOTSTRAP 1 -1
+    parted $DISK -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_SSD_BOOTSTRAP 1 -1
 
 Enable the Ceph cache tier in ``/etc/kolla/globals.yml``:
 
@@ -309,7 +309,7 @@ to add a partition label to it as shown below:
 ::
 
     # <WARNING ALL DATA ON /dev/sdb will be LOST!>
-    parted /dev/sdb -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP 1 -1
+    parted /dev/sdb -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_HDD_BOOTSTRAP 1 -1
 
 Make sure to run this command on each of the 3 nodes or the deployment will
 fail.

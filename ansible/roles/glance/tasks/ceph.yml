@@ -16,9 +16,9 @@
 
 - include: ../../ceph_pools.yml
   vars:
-    pool_name: "{{ glance_pool_name }}"
-    pool_type: "{{ glance_pool_type }}"
-    cache_mode: "{{ glance_cache_mode }}"
+    pool_name: images
+    pool_type: replicated
+    disk_type: hdd
 
 # TODO(SamYaple): Improve changed_when tests
 - name: Pulling cephx keyring

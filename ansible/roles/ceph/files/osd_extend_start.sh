@@ -95,21 +95,13 @@ if [[ "${!KOLLA_BOOTSTRAP[@]}" ]]; then
     cd /
     umount "${OSD_PARTITION}"
 
-    if [[ "${!CEPH_CACHE[@]}" ]]; then
-        CEPH_ROOT_NAME=cache
-    fi
-
     if [[ "${OSD_INITIAL_WEIGHT}" == "auto" ]]; then
         OSD_INITIAL_WEIGHT=$(parted --script ${OSD_PARTITION} unit TB print | awk 'match($0, /^Disk.* (.*)TB/, a){printf("%.2f", a[1])}')
     fi
 
-    # These commands only need to be run once per host but are safe to run
-    # repeatedly. This can be improved later or if any problems arise.
-    ceph osd crush add-bucket "${HOSTNAME}${CEPH_ROOT_NAME:+-${CEPH_ROOT_NAME}}" host
-    ceph osd crush move "${HOSTNAME}${CEPH_ROOT_NAME:+-${CEPH_ROOT_NAME}}" root=${CEPH_ROOT_NAME:-default}
-
-    # Adding osd to crush map
-    ceph osd crush add "${OSD_ID}" "${OSD_INITIAL_WEIGHT}" host="${HOSTNAME}${CEPH_ROOT_NAME:+-${CEPH_ROOT_NAME}}"
+    if [[ "${!CEPH_ROOT_SSD[@]}" ]]; then
+        ceph osd crush set-device-class ssd "osd.${OSD_ID}"
+    fi
 
     # Setting partition name based on ${OSD_ID}
     sgdisk "--change-name=${JOURNAL_PARTITION_NUM}:KOLLA_CEPH_DATA_${OSD_ID}_J" "--typecode=${JOURNAL_PARTITION_NUM}:${CEPH_JOURNAL_TYPE_CODE}" -- "${JOURNAL_DEV}"

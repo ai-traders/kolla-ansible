@@ -105,10 +105,24 @@ iscsi_protocol = iscsi
 {% endif %}
 
 {% if enable_ceph | bool and cinder_backend_ceph | bool %}
-[rbd-1]
+[ceph_hdd]
 volume_driver = cinder.volume.drivers.rbd.RBDDriver
-volume_backend_name = rbd-1
-rbd_pool = {{ ceph_cinder_pool_name }}
+volume_backend_name = ceph_hdd
+rbd_pool = {{ ceph_cinder_hdd_pool_name }}
+rbd_ceph_conf = /etc/ceph/ceph.conf
+rbd_flatten_volume_from_snapshot = false
+rbd_max_clone_depth = 5
+rbd_store_chunk_size = 4
+rados_connect_timeout = 5
+rbd_user = cinder
+rbd_secret_uuid = {{ cinder_rbd_secret_uuid }}
+report_discard_supported = True
+image_upload_use_cinder_backend = True
+
+[ceph_ssd]
+volume_driver = cinder.volume.drivers.rbd.RBDDriver
+volume_backend_name = ceph_ssd
+rbd_pool = {{ ceph_cinder_ssd_pool_name }}
 rbd_ceph_conf = /etc/ceph/ceph.conf
 rbd_flatten_volume_from_snapshot = false
 rbd_max_clone_depth = 5

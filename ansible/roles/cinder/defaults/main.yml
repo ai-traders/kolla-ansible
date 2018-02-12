@@ -54,15 +54,16 @@ cinder_services:
 ####################
 # Ceph
 ####################
-ceph_cinder_pool_type: "{{ ceph_pool_type }}"
+ceph_cinder_hdd_pool_type: "{{ ceph_hdd_pool_type }}"
+ceph_cinder_ssd_pool_type: "{{ ceph_ssd_pool_type }}"
 ceph_cinder_cache_mode: "{{ ceph_cache_mode }}"
 ceph_cinder_backup_pool_type: "{{ ceph_pool_type }}"
 ceph_cinder_backup_cache_mode: "{{ ceph_cache_mode }}"
 
 # Due to Ansible issues on include, you cannot override these variables. Please
 # override the variables they reference instead.
-cinder_pool_name: "{{ ceph_cinder_pool_name }}"
-cinder_pool_type: "{{ ceph_cinder_pool_type }}"
+cinder_hdd_pool_name: "{{ ceph_cinder_hdd_pool_name }}"
+cinder_ssd_pool_type: "{{ ceph_cinder_ssd_pool_type }}"
 cinder_cache_mode: "{{ ceph_cinder_cache_mode }}"
 cinder_backup_pool_name: "{{ ceph_cinder_backup_pool_name }}"
 cinder_backup_pool_type: "{{ ceph_cinder_backup_pool_type }}"
@@ -124,7 +125,9 @@ openstack_cinder_auth: "{{ openstack_auth }}"
 # Cinder
 ####################
 cinder_backends:
-  - name: "rbd-1"
+  - name: "ceph_hdd"
+    enabled: "{{ enable_ceph | bool and cinder_backend_ceph | bool }}"
+  - name: "ceph_ssd"
     enabled: "{{ enable_ceph | bool and cinder_backend_ceph | bool }}"
   - name: "lvm-1"
     enabled: "{{ enable_cinder_backend_lvm | bool }}"
