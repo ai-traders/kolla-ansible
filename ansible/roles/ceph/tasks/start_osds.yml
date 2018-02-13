@@ -36,12 +36,27 @@
     osd_id: "{{ item.0.stdout }}"
     osd_data_part: "/dev/disk/by-partlabel/KOLLA_CEPH_DATA_{{ osd_id }}"
     osd_journal_part: "/dev/disk/by-partlabel/KOLLA_CEPH_DATA_{{ osd_id }}_J"
-    osd_bluestore_part: "/dev/disk/by-partlabel/KOLLA_CEPH_{{ osd_id }}_BLUESTORE"
-    osd_blue_kv_part: "/dev/disk/by-partlabel/KOLLA_CEPH_{{ osd_id }}_BLUE_KV"
+    osd_bluestore_part: "/dev/disk/by-partlabel/KOLLA_CEPH_DATA_{{ osd_id }}_BLUESTORE"
+    osd_blue_kv_part: "/dev/disk/by-partlabel/KOLLA_CEPH_DATA_{{ osd_id }}_BLUEDB"
     bluestore_enabled: "{% if ceph_osd_filesystem == 'bluestore' %}True{% endif %}"
+    external_journal: "{{ item.1.external_journal | bool }}"
+    external_bluedb: "{{ item.1.external_bluedb | bool }}"
+    # Below lines are a horror workaround patch for ansible not handling conditional items on a list
+    # We just want to map a few devices if they were found:
+    # - "{{ osd_data_part }}"
+    # - "{% if bluestore_enabled %}{{ osd_bluestore_part }}{% endif %}"
+    # - "{% if external_journal %}{{ osd_journal_part }}{% endif %}"
+    # - "{% if bluestore_enabled and external_bluedb %}{{ osd_blue_kv_part }}{% endif %}"
+    # But above will not work, so we need this:
+    required_devices:
+      - "{{ osd_data_part }}"
+    required_devices_blue: "{{ required_devices + [osd_bluestore_part] if bluestore_enabled else required_devices }}"
+    devices_journal: "{{ required_devices_blue + [osd_journal_part] if external_journal else required_devices_blue }}"
+    devices: "{{ devices_journal + [osd_blue_kv_part] if bluestore_enabled and external_bluedb else devices_journal }}"
   docker_container:
     restart_policy: "{{ docker_restart_policy }}"
     env:
+      OSD_FILESYSTEM: "{{ ceph_osd_filesystem }}"
       KOLLA_CONFIG_STRATEGY: "{{ config_strategy }}"
       KOLLA_SERVICE_NAME: ceph-osd
       OSD_ID: "{{ osd_id }}"
@@ -52,11 +67,7 @@
     network_mode: "host"
     pid_mode: "host"
     privileged: False
-    devices:
-      - "{{ osd_data_part }}"
-      - "{{ osd_journal_part }}"
-      - "{% if bluestore_enabled %}{{ osd_bluestore_part }}{% endif %}"
-      - "{% if bluestore_enabled %}{{ osd_blue_kv_part }}{% endif %}"
+    devices: "{{ devices }}"
     volumes:
       - "/var/ait/scripts/osd_extend_start:/usr/local/bin/kolla_extend_start"
       - "{{ node_config_directory }}/ceph-osd/:{{ container_config_directory }}/:ro"
