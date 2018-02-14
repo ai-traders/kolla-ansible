@@ -21,6 +21,22 @@ if [ -z "$AIT_NOVA_COMPUTE_TYPE" ];
 fi
 if [ $AIT_NOVA_COMPUTE_TYPE == "p" ]; then
     echo "p-flavor nothing to mount"
+elif [ $AIT_NOVA_COMPUTE_TYPE == "v" ]; then
+    echo "Nova compute v type, instances will be a filesystem mount"
+    mkdir -p /var/lib/nova/instances
+    if [ -z "$AIT_NOVA_INSTANCES_DEVICE" ];
+      then echo "AIT_NOVA_INSTANCES_DEVICE is not set";
+      exit 5
+    fi
+    if [[ -e "${AIT_NOVA_INSTANCES_DEVICE}" ]]; then
+      mount "${AIT_NOVA_INSTANCES_DEVICE}" /var/lib/nova/instances
+      mkdir -p /var/lib/nova/instances/_base
+      chown nova:nova /var/lib/nova/instances /var/lib/nova/instances/_base
+      check_mounted "/var/lib/nova/instances"
+    else
+      echo "${AIT_NOVA_INSTANCES_DEVICE} does not exist"
+      exit 5;
+    fi
 elif [ $AIT_NOVA_COMPUTE_TYPE == "w" ]; then
     echo "Nova compute worker type, expecting LVM group to be present"
     if [ $KOLLA_SERVICE_NAME == "nova-libvirt" ]; then

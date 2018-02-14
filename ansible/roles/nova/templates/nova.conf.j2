@@ -185,6 +185,8 @@ images_type = lvm
 images_volume_group = nova_{{ inventory_hostname }}
 sparse_logical_volumes = {{ nova_sparse_logical_volumes | bool }}
 volume_clear = none
+{% elif ait_nova_compute_type == 'v' %}
+images_type = qcow2
 {% endif %}
 
 {% if nova_compute_virt_type == "vmware" %}

@@ -14,6 +14,7 @@ nova_services:
       AIT_NOVA_INSTANCES_MOUNT_OPTS: "{{ ait_nova_instances_mount }}"
       AIT_NOVA_INSTANCES_BASE_MOUNT_OPTS: "{{ ait_nova_instances_base_mount }}"
       AIT_NOVA_BASE_DEVICE: "/dev/nova_{{ inventory_hostname }}/nova_{{ inventory_hostname }}_base"
+      AIT_NOVA_INSTANCES_DEVICE: "/dev/nova_{{ inventory_hostname }}/nova_{{ inventory_hostname }}_instances"
     volumes:
       - "/var/ait/scripts/nova_mounts:/usr/bin/ait_mounts:ro"
       - "{{ node_config_directory }}/nova-libvirt/:{{ container_config_directory }}/:ro"
@@ -124,6 +125,7 @@ nova_services:
       AIT_NOVA_INSTANCES_MOUNT_OPTS: "{{ ait_nova_instances_mount }}"
       AIT_NOVA_INSTANCES_BASE_MOUNT_OPTS: "{{ ait_nova_instances_base_mount }}"
       AIT_NOVA_BASE_DEVICE: "/dev/nova_{{ inventory_hostname }}/nova_{{ inventory_hostname }}_base"
+      AIT_NOVA_INSTANCES_DEVICE: "/dev/nova_{{ inventory_hostname }}/nova_{{ inventory_hostname }}_instances"
     volumes:
       - "/var/ait/scripts/nova_mounts:/usr/bin/ait_mounts:ro"
       - "{{ node_config_directory }}/nova-compute/:{{ container_config_directory }}/:ro"

@@ -42,7 +42,7 @@
     - ait_nova_compute_type == 'p'
 
 - include: lvm.yml
-  when: ait_nova_compute_type == 'w'
+  when: ait_nova_compute_type == 'w' or ait_nova_compute_type == 'v'
 
 - include: config.yml
 

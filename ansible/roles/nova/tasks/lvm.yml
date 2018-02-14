@@ -53,6 +53,7 @@
     lv: "{{ final_volume }}"
     vg: "{{ vg }}"
     size: "{{ ait_nova_wflavor_base_size }}"
+  when: ait_nova_compute_type == 'w'
 
 - name: Format ext4 filesystem for base images
   vars:
@@ -62,3 +63,24 @@
     fstype: ext4
     dev: "/dev/{{ vg }}/{{ final_volume }}"
     opts: "-L NOVA_BASE"
+  when: ait_nova_compute_type == 'w'
+
+- name: Create lvm volume for instances volume
+  vars:
+    final_volume: "nova_{{ inventory_hostname }}_instances"
+    vg: "nova_{{ inventory_hostname }}"
+  lvol:
+    lv: "{{ final_volume }}"
+    vg: "{{ vg }}"
+    size: "100%VG"
+  when: ait_nova_compute_type == 'v'
+
+- name: Format ext4 filesystem for instances
+  vars:
+    final_volume: "nova_{{ inventory_hostname }}_instances"
+    vg: "nova_{{ inventory_hostname }}"
+  filesystem:
+    fstype: ext4
+    dev: "/dev/{{ vg }}/{{ final_volume }}"
+    opts: "-L NOVA_INSTANCES"
+  when: ait_nova_compute_type == 'v'
