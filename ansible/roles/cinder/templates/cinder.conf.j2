@@ -47,6 +47,10 @@ backup_swift_auth = per_user
 backup_swift_auth_version = 1
 backup_swift_user =
 backup_swift_key =
+{% elif cinder_backup_driver == "posix" %}
+backup_driver = cinder.backup.drivers.posix
+backup_enable_progress_timer = {{ enable_ceilometer | bool }}
+backup_posix_path = /var/lib/cinder/backup
 {% endif %}
 {% endif %}
 
