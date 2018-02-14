@@ -12,11 +12,13 @@
 - file:
     path: /var/ait/scripts
     state: directory
+  when: inventory_hostname in groups['glance-api']
 - name: Install ait_mounts script
   template:
     src: ait_mounts.sh.j2
     dest: "/var/ait/scripts/glance_mounts"
     mode: 0755
+  when: inventory_hostname in groups['glance-api']
   notify:
     - Restart glance-api container
 

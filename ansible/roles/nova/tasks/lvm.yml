@@ -4,6 +4,7 @@
   with_items:
     - lvm2
     - thin-provisioning-tools
+    - kmod
 
 - name: Check if disk device is already used
   command: "wipefs {{ ait_nova_worker_disk }}"
@@ -24,3 +25,40 @@
   lvg:
     pvs: "{{ device }}"
     vg: "{{ vg }}"
+
+- name: Fix LVM config when in docker
+  shell: |
+    sed -i.save -e "s#udev_sync = 1#udev_sync = 0#" -e "s#udev_rules = 1#udev_rules = 0#" -e "s#use_lvmetad = 1#use_lvmetad = 0#" /etc/lvm/lvm.conf;
+  when: in_docker | bool
+
+- name: Load thin provisioning module
+  command: modprobe dm_thin_pool
+
+# Cannot share thin pool with instances, so this is useless
+# - name: Create thin pool and base images volume
+#   vars:
+#     final_volume: "nova_{{ inventory_hostname }}_base"
+#   shell: |
+#     lvcreate -l 100%FREE  --thinpool nova_{{ inventory_hostname }}_thin_pool nova_{{ inventory_hostname }}
+#     lvcreate -V {{ ait_nova_wflavor_base_size }} --thin -n {{ final_volume }} nova_{{ inventory_hostname }}/nova_{{ inventory_hostname }}_thin_pool
+#   when:
+#     - not ansible_lvm is defined or
+#       not ansible_lvm['lvs'][final_volume] is defined
+
+- name: Create lvm volume for base images volume
+  vars:
+    final_volume: "nova_{{ inventory_hostname }}_base"
+    vg: "nova_{{ inventory_hostname }}"
+  lvol:
+    lv: "{{ final_volume }}"
+    vg: "{{ vg }}"
+    size: "{{ ait_nova_wflavor_base_size }}"
+
+- name: Format ext4 filesystem for base images
+  vars:
+    final_volume: "nova_{{ inventory_hostname }}_base"
+    vg: "nova_{{ inventory_hostname }}"
+  filesystem:
+    fstype: ext4
+    dev: "/dev/{{ vg }}/{{ final_volume }}"
+    opts: "-L NOVA_BASE"

@@ -24,12 +24,14 @@
     src: shutdown-node.sh.j2
     dest: "/usr/sbin/shutdown-node"
     mode: 0755
+  when: inventory_hostname in groups['compute']
 
 - name: Install ait_mounts script
   template:
     src: ait_mounts.sh
     dest: "/var/ait/scripts/nova_mounts"
     mode: 0755
+  when: inventory_hostname in groups['compute']
 
 - include: register.yml
   when: inventory_hostname in groups['nova-api']

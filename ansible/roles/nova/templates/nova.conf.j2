@@ -164,7 +164,7 @@ memcached_servers = {% for host in groups['memcached'] %}{{ hostvars[host]['ansi
 {% if nova_compute_virt_type in ['kvm', 'qemu'] %}
 [libvirt]
 connection_uri = "qemu+tcp://{{ api_interface_address }}/system"
-{% if enable_ceph | bool and nova_backend == "rbd" %}
+{% if enable_ceph | bool and nova_backend == "rbd" and ait_nova_compute_type == 'p' %}
 images_type = rbd
 images_rbd_pool = {{ ceph_nova_pool_name }}
 images_rbd_ceph_conf = /etc/ceph/ceph.conf
@@ -183,6 +183,8 @@ virt_type = {{ nova_compute_virt_type }}
 {% if ait_nova_compute_type == 'w' %}
 images_type = lvm
 images_volume_group = nova_{{ inventory_hostname }}
+sparse_logical_volumes = {{ nova_sparse_logical_volumes | bool }}
+volume_clear = none
 {% endif %}
 
 {% if nova_compute_virt_type == "vmware" %}

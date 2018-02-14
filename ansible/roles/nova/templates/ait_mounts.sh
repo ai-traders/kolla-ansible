@@ -20,6 +20,27 @@ if [ -z "$AIT_NOVA_COMPUTE_TYPE" ];
   exit 5
 fi
 if [ $AIT_NOVA_COMPUTE_TYPE == "p" ]; then
+    echo "p-flavor nothing to mount"
+elif [ $AIT_NOVA_COMPUTE_TYPE == "w" ]; then
+    echo "Nova compute worker type, expecting LVM group to be present"
+    if [ $KOLLA_SERVICE_NAME == "nova-libvirt" ]; then
+      # No need to mount anything in libvirt container, base images are copied to LVM volumes
+      exit 0
+    fi
+    mkdir -p /var/lib/nova/instances/_base
+    if [ -z "$AIT_NOVA_BASE_DEVICE" ];
+      then echo "AIT_NOVA_BASE_DEVICE is not set";
+      exit 5
+    fi
+    if [[ -e "${AIT_NOVA_BASE_DEVICE}" ]]; then
+      mount "${AIT_NOVA_BASE_DEVICE}" /var/lib/nova/instances/_base
+      chown nova:nova /var/lib/nova/instances /var/lib/nova/instances/_base
+      check_mounted "/var/lib/nova/instances/_base"
+    else
+      echo "${AIT_NOVA_BASE_DEVICE} does not exist"
+      exit 5;
+    fi
+elif [ $AIT_NOVA_COMPUTE_TYPE == "pgluster" ]; then
     if [ -z "$AIT_NOVA_INSTANCES_MOUNT_OPTS" ];
       then echo "AIT_NOVA_INSTANCES_MOUNT_OPTS is not set";
       exit 5
@@ -36,7 +57,7 @@ if [ $AIT_NOVA_COMPUTE_TYPE == "p" ]; then
       check_mounted "/var/lib/nova/instances"
       check_mounted "/var/lib/nova/instances/_base"
     fi
-elif [ $AIT_NOVA_COMPUTE_TYPE == "w" ]; then
+elif [ $AIT_NOVA_COMPUTE_TYPE == "wgluster" ]; then
   echo "Nova compute worker type, expecting LVM group to be present"
   if [ -z "$AIT_NOVA_INSTANCES_BASE_MOUNT_OPTS" ];
     then echo "AIT_NOVA_INSTANCES_BASE_MOUNT_OPTS is not set";

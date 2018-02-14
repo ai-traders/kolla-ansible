@@ -583,7 +583,10 @@ nova_backend_ceph: "{{ enable_ceph }}"
 nova_backend: "{{ 'rbd' if nova_backend_ceph | bool else 'default' }}"
 # Valid options are [ kvm, qemu, vmware ]
 nova_compute_virt_type: "kvm"
+# Applies only to w-flavor on LVM backend
+nova_sparse_logical_volumes: "yes"
 ait_nova_compute_type: p
+ait_nova_wflavor_base_size: 50G
 
 # AIT GlusterFS
 ait_glusterfs_server0: glusterfs-server-0
