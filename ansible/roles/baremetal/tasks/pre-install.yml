@@ -2,6 +2,7 @@
 - name: deconfigure route to internet via data net
   command: route del default
   ignore_errors: true
+  when: in_docker | bool
 - name: configure route to internet via management
   command: route add default gw 192.168.200.1
   when: in_docker | bool
