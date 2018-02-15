@@ -17,6 +17,11 @@ node_config_directory: "/etc/kolla/{{ project }}"
 
 vm_shutdown_timeout: 60
 
+# These just don't make sense on docker hosts
+in_docker: "{{ 'hdind' in ansible_hostname or 'hdind' in inventory_hostname }}"
+enable_host_ntp: "{{ not in_docker }}"
+set_sysctl: "{{ not in_docker }}"
+
 ###################
 # Kolla options
 ###################
@@ -303,9 +308,6 @@ multiple_regions_names:
 
 openstack_service_workers: "{{ [ansible_processor_vcpus, 5]|min }}"
 openstack_service_rpc_workers: "{{ [ansible_processor_vcpus, 3]|min }}"
-
-# Optionally allow Kolla to set sysctl values
-set_sysctl: "yes"
 
 # Valid options are [ novnc, spice ]
 nova_console: "novnc"

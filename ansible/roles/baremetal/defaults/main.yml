@@ -9,8 +9,6 @@ customize_etc_hosts: True
 
 create_kolla_user: True
 
-enable_host_ntp: True
-
 disable_selinux: False
 
 docker_storage_driver: ""
