@@ -56,7 +56,7 @@ kolla_dev_mode: "no"
 ####################
 # By default, Kolla API services bind to the network address assigned
 # to the api_interface.  Allow the bind address to be an override.
-api_interface_address:  "{{ hostvars[inventory_hostname]['ansible_' + api_interface]['ipv4']['address'] }}"
+# api_interface_address:  "{{ hostvars[inventory_hostname]['ansible_' + api_interface]['ipv4']['address'] }}"
 
 ################
 # Chrony options
@@ -121,7 +121,10 @@ es_heap_size: "1G"
 network_interface: "eth0"
 neutron_external_interface: "eth1"
 kolla_external_vip_interface: "{{ network_interface }}"
-api_interface: "{{ network_interface }}"
+# api_interface: "{{ network_interface }}"
+api_interface: "{{ management_network_interface }}"
+api_interface_address: "{{ management_network_address }}"
+
 storage_interface: "{{ network_interface }}"
 cluster_interface: "{{ network_interface }}"
 tunnel_interface: "{{ network_interface }}"

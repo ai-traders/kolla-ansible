@@ -45,9 +45,6 @@
       set_fact:
         management_network_address: "{{ hostvars[inventory_hostname][ansible_interface_name]['ipv4']['address'] }}"
         management_network_interface: "{{ item.replace('br-', '') }}"
-        api_interface_name: "{{ item.replace('br-', '') }}"
-        api_interface: "{{ item.replace('br-', '') }}"
-        api_interface_address: "{{ hostvars[inventory_hostname][ansible_interface_name]['ipv4']['address'] }}"
       when:
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4'] is defined
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4']['network'] == management_network
@@ -93,9 +90,6 @@
       set_fact:
         management_network_address: "{{ hostvars[inventory_hostname][ansible_interface_name]['ipv4']['address'] }}"
         management_network_interface: "{{ item[0].replace('br-', '') }}"
-        api_interface_name: "{{ item[0].replace('br-', '') }}"
-        api_interface: "{{ item[0].replace('br-', '') }}"
-        api_interface_address: "{{ hostvars[inventory_hostname][ansible_interface_name]['ipv4']['address'] }}"
       when:
         - (ansible_play_batch | length) != (groups['all'] | length)
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4'] is defined

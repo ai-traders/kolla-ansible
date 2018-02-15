@@ -4,10 +4,11 @@
   ignore_errors: true
 - name: configure route to internet via management
   command: route add default gw 192.168.200.1
+  when: in_docker | bool
 - name: mount tmpfs for ansible transfers
   command: "mount -t tmpfs -o size=32M tmpfs /root/.ansible"
   when:
-    - in_docker
+    - in_docker | bool
     - ansible_connection == 'docker'
 # NOTE: raw install is required to support cloud images which do not have python installed
 - name: "Install python2 and python-simplejson"
