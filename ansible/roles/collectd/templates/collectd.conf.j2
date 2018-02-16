@@ -1,11 +1,35 @@
 FQDNLookup false
 LoadPlugin syslog
 LoadPlugin cpu
+LoadPlugin cpufreq
+LoadPlugin df
+LoadPlugin disk
 LoadPlugin interface
 LoadPlugin load
 LoadPlugin memory
 LoadPlugin network
+LoadPlugin sensors
 
-<Plugin "network">
-    Server "{{ hostvars[inventory_hostname]['ansible_' + api_interface]['ipv4']['address'] }}" "{{ collectd_udp_port }}"
+{% if collectd_smart_disks is defined %}
+LoadPlugin exec
+<Plugin exec>
+   Exec "collectd:collectd" "/usr/bin/collectd-smartmon" {% for disk in collectd_smart_disks %}"{{ disk }}" {% endfor %}
+   
+</Plugin>
+{% endif %}
+
+LoadPlugin "write_graphite"
+<Plugin "write_graphite">
+<Carbon>
+
+Host "{{ collectd_graphite_server }}"
+Port 2003
+Protocol "udp"
+LogSendErrors true
+Prefix "collectd."
+Postfix ""
+StoreRates true
+AlwaysAppendDS false
+EscapeCharacter "_"
+</Carbon>
 </Plugin>
