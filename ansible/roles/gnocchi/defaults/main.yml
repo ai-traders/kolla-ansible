@@ -10,7 +10,7 @@ gnocchi_services:
     volumes:
       - "{{ node_config_directory }}/gnocchi-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "gnocchi:/var/lib/gnocchi/"
+      - "/var/ait/base/metrics/gnocchi:/var/lib/gnocchi/"
       - "kolla_logs:/var/log/kolla/"
   gnocchi-metricd:
     container_name: gnocchi_metricd
@@ -20,7 +20,7 @@ gnocchi_services:
     volumes:
       - "{{ node_config_directory }}/gnocchi-metricd/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "gnocchi:/var/lib/gnocchi/"
+      - "/var/ait/base/metrics/gnocchi:/var/lib/gnocchi/"
       - "kolla_logs:/var/log/kolla/"
   gnocchi-statsd:
     container_name: gnocchi_statsd
@@ -30,7 +30,7 @@ gnocchi_services:
     volumes:
       - "{{ node_config_directory }}/gnocchi-statsd/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "gnocchi:/var/lib/gnocchi/"
+      - "/var/ait/base/metrics/gnocchi:/var/lib/gnocchi/"
       - "kolla_logs:/var/log/kolla/"
 
 
