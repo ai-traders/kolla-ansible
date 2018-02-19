@@ -27,3 +27,6 @@
   when:
     - enable_ceph_rgw_keystone | bool
     - inventory_hostname in groups['ceph-rgw']
+
+- include: ceph_rbd.yml
+  when: inventory_hostname in groups['ceph']

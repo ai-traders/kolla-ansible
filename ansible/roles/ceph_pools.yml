@@ -6,8 +6,15 @@
   run_once: True
   when: pool_type == "replicated"
 
+- name: Check if pool exists
+  command: docker exec ceph_mon ceph osd lspools
+  delegate_to: "{{ groups['ceph-mon'][0] }}"
+  run_once: True
+  register: lspools
+
 - name: Creating ceph pool and assigning crush ruleset
   command: "docker exec ceph_mon ceph osd pool create {{ pool_name }} {{ ceph_pg_num }} {{ ceph_pg_num }} {{ pool_type }} {{ 'erasure-profile' if pool_type == 'erasure' else '' }} repl_{{ disk_type }}"
   delegate_to: "{{ groups['ceph-mon'][0] }}"
-  changed_when: False
+  changed_when: "not pool_name in lspools.stdout"
   run_once: True
+  when: "not pool_name in lspools.stdout"
