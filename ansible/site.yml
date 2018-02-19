@@ -38,38 +38,42 @@
   tags:
     - always
   tasks:
-    - name: Find management interface
+    - name: Find management address
       vars:
         management_network: 192.168.200.0
         ansible_interface_name: "ansible_{{ item.replace('-', '_') }}"
       set_fact:
         management_network_address: "{{ hostvars[inventory_hostname][ansible_interface_name]['ipv4']['address'] }}"
-        management_network_interface: "{{ item.replace('br-', '') }}"
       when:
+        - hostvars[inventory_hostname][ansible_interface_name] is defined
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4'] is defined
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4']['network'] == management_network
-        - not 'dbr' in item
-        - not 'eth3' in item
-      with_items: "{{ ansible_interfaces }}"
+      with_items:
+        # One of these 2 interfaces has an IP
+        - "{{ management_network_interface }}"
+        - "br-{{ management_network_interface }}"
+
     - name: Show management interfaces
       debug:
         msg: "Interface: {{ management_network_interface }} is in management network at {{ management_network_address }}"
       when:
         - not inventory_hostname in groups['deployment']
 
-    - name: Find data interface
+    - name: Find data address
       vars:
         data_network: 192.168.100.0
         ansible_interface_name: "ansible_{{ item.replace('-', '_') }}"
       set_fact:
         data_network_address: "{{ hostvars[inventory_hostname][ansible_interface_name]['ipv4']['address'] }}"
-        data_network_interface: "{{ item.replace('br-', '') }}"
       when:
+        - hostvars[inventory_hostname][ansible_interface_name] is defined
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4'] is defined
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4']['network'] == data_network
-        - not 'dbr' in item
-        - not 'eth3' in item
-      with_items: "{{ ansible_interfaces }}"
+      with_items:
+        # One of these 2 interfaces has an IP
+        - "{{ data_network_interface }}"
+        - "br-{{ data_network_interface }}"
+
     - name: Show data interfaces
       debug:
         msg: "Interface: {{ data_network_interface }} is in data network at {{ data_network_address }}"
@@ -81,7 +85,7 @@
   serial: '{{ serial|default("0") }}'
   gather_facts: false
   tasks:
-    - name: Find management interface
+    - name: Find management address
       delegate_facts: True
       delegate_to: "{{ item[1]}}"
       vars:
@@ -89,23 +93,23 @@
         ansible_interface_name: "ansible_{{ item[0].replace('-', '_') }}"
       set_fact:
         management_network_address: "{{ hostvars[inventory_hostname][ansible_interface_name]['ipv4']['address'] }}"
-        management_network_interface: "{{ item[0].replace('br-', '') }}"
       when:
         - (ansible_play_batch | length) != (groups['all'] | length)
+        - hostvars[inventory_hostname][ansible_interface_name] is defined
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4'] is defined
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4']['network'] == management_network
-        - not 'dbr' in item[0]
-        - not 'eth3' in item[0]
       with_nested:
-        - "{{ ansible_interfaces }}"
+        - "[{{ management_network_interface }}, br-{{ management_network_interface }}]"
         - "{{ groups['all'] }}"
+
     - name: Show management interfaces
       debug:
         msg: "Interface: {{ management_network_interface }} is in management network at {{ management_network_address }}"
       when:
+        - (ansible_play_batch | length) != (groups['all'] | length)
         - not inventory_hostname in groups['deployment']
 
-    - name: Find data interface
+    - name: Find data address
       delegate_facts: True
       delegate_to: "{{ item[1]}}"
       vars:
@@ -113,19 +117,20 @@
         ansible_interface_name: "ansible_{{ item[0].replace('-', '_') }}"
       set_fact:
         data_network_address: "{{ hostvars[inventory_hostname][ansible_interface_name]['ipv4']['address'] }}"
-        data_network_interface: "{{ item[0].replace('br-', '') }}"
       when:
+        - (ansible_play_batch | length) != (groups['all'] | length)
+        - hostvars[inventory_hostname][ansible_interface_name] is defined
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4'] is defined
         - hostvars[inventory_hostname][ansible_interface_name]['ipv4']['network'] == data_network
-        - not 'dbr' in item[0]
-        - not 'eth3' in item[0]
       with_nested:
-        - "{{ ansible_interfaces }}"
+        - "[{{ data_network_interface }}, br-{{ data_network_interface }}]"
         - "{{ groups['all'] }}"
+
     - name: Show data interfaces
       debug:
         msg: "Interface: {{ data_network_interface }} is in data network at {{ data_network_address }}"
       when:
+        - (ansible_play_batch | length) != (groups['all'] | length)
         - not inventory_hostname in groups['deployment']
 
 - name: Detect openstack_release variable

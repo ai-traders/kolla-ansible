@@ -118,8 +118,11 @@ es_heap_size: "1G"
 ####################
 # Networking options
 ####################
-network_interface: "eth0"
-neutron_external_interface: "eth1"
+management_network_interface: "{% if in_docker | bool %}eth1{% else %}eth0{% endif %}"
+data_network_interface: "{% if in_docker | bool %}eth0{% else %}eth1{% endif %}"
+
+network_interface: "{{ management_network_interface }}"
+neutron_external_interface: "eth2"
 kolla_external_vip_interface: "{{ network_interface }}"
 # api_interface: "{{ network_interface }}"
 api_interface: "{{ management_network_interface }}"
