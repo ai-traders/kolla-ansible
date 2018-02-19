@@ -60,6 +60,7 @@
 - name: Install docker SDK for python
   pip: name=docker state=latest
   become: True
+  retries: 2
 
 - name: Install wait for docker script
   template:
