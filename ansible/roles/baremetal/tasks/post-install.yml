@@ -43,6 +43,7 @@
 - name: Remove apparmor profile for libvirt
   command: apparmor_parser -R /etc/apparmor.d/usr.sbin.libvirtd
   become: True
+  ignore_errors: True
   when:
     - ansible_distribution == "Ubuntu"
     - apparmor_libvirtd_profile.stat.exists
