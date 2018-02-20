@@ -120,6 +120,7 @@ es_heap_size: "1G"
 ####################
 management_network_interface: "{% if in_docker | bool %}eth1{% else %}eth0{% endif %}"
 data_network_interface: "{% if in_docker | bool %}eth0{% else %}eth1{% endif %}"
+external_network_interface: "eth2"
 
 network_interface: "{{ management_network_interface }}"
 neutron_external_interface: "eth2"
