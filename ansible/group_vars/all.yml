@@ -22,6 +22,9 @@ in_docker: "{{ 'hdind' in ansible_hostname or 'hdind' in inventory_hostname }}"
 enable_host_ntp: "{{ not in_docker }}"
 set_sysctl: "{{ not in_docker }}"
 
+enable_consul: False
+consul_port: 8500
+
 ###################
 # Kolla options
 ###################

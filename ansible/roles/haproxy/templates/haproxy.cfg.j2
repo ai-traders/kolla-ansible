@@ -231,6 +231,14 @@ listen nova_serialconsole_proxy_external
 {% endif %}
 {% endif %}
 
+{% if enable_consul | bool %}
+listen consul
+  bind {{ kolla_internal_vip_address }}:{{ consul_port }}
+{% for host in groups['consul'] %}
+  server {{ hostvars[host]['ansible_hostname'] }} {{ hostvars[host]['api_interface_address'] }}:{{ consul_port }} check inter 2000 rise 2 fall 5
+{% endfor %}
+{% endif %}
+
 {% if enable_neutron | bool %}
 listen neutron_server
   bind {{ kolla_internal_vip_address }}:{{ neutron_server_port }}
