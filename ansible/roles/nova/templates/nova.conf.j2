@@ -240,6 +240,9 @@ host_manager = ironic_host_manager
 default_filters = RetryFilter,AvailabilityZoneFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter
 {% endif %}
 
+[filter_scheduler]
+enabled_filters = RetryFilter,AvailabilityZoneFilter,ComputeFilter,ComputeCapabilitiesFilter,AggregateInstanceExtraSpecsFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,RamFilter,DiskFilter
+
 [placement]
 auth_type = password
 auth_url = {{ admin_protocol }}://{{ kolla_internal_fqdn }}:{{ keystone_admin_port }}
