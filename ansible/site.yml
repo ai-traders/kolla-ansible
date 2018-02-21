@@ -339,6 +339,7 @@
     - ceph-rgw
     - ceph-mgr
   serial: '{{ serial|default("0") }}'
+  max_fail_percentage: 5
   roles:
     - { role: ceph,
         tags: ceph,
