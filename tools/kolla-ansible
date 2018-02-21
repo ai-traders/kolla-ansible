@@ -97,7 +97,7 @@ EOF
 }
 
 SHORT_OPTS="hi:p:t:k:e:v"
-LONG_OPTS="help,inventory:,playbook:,tags:,key:,extra:,verbose,configdir:,passwords:,limit:,yes-i-really-really-mean-it,include-images,include-dev"
+LONG_OPTS="help,inventory:,playbook:,tags:,skip-tags:,forks:,key:,extra:,verbose,configdir:,passwords:,limit:,yes-i-really-really-mean-it,include-images,include-dev"
 ARGS=$(getopt -o "${SHORT_OPTS}" -l "${LONG_OPTS}" --name "$0" -- "$@") || { usage >&2; exit 2; }
 
 eval set -- "$ARGS"
@@ -134,7 +134,14 @@ while [ "$#" -gt 0 ]; do
             EXTRA_OPTS="$EXTRA_OPTS --tags $2"
             shift 2
             ;;
-
+    (--skip-tags)
+            EXTRA_OPTS="$EXTRA_OPTS --skip-tags $2"
+            shift 2
+            ;;
+    (--forks|-f)
+            EXTRA_OPTS="$EXTRA_OPTS --forks $2"
+            shift 2
+            ;;
     (--verbose|-v)
             VERBOSITY="$VERBOSITY --verbose"
             shift 1
