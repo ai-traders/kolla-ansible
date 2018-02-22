@@ -146,6 +146,11 @@ designate_bind_forwarders:
 # Valid options are [ openvswitch, linuxbridge, vmware_nsxv, vmware_dvs, opendaylight ]
 neutron_plugin_agent: "openvswitch"
 
+neutron_global_physnet_mtu: 1500
+management_network_mtu: 5000
+data_network_mtu: 9000
+external_network_mtu: 1500
+
 # The default ports used by each service.
 # The list should be in alphabetical order
 aodh_api_port: "8042"

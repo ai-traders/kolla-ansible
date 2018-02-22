@@ -22,6 +22,12 @@ extension_drivers = {{ neutron_extension_drivers|map(attribute='name')|join(',')
 extension_drivers = port_security
 {% endif %}
 
+{% if inventory_hostname in groups["network"] or inventory_hostname in groups['neutron-server'] %}
+physical_network_mtus = management:{{ management_network_mtu }},data:{{ data_network_mtu }},external:{{ external_network_mtu }}
+{% elif inventory_hostname in groups["compute"] and computes_need_external_bridge %}
+physical_network_mtus = management:{{ management_network_mtu }},data:{{ data_network_mtu }}
+{% endif %}
+
 {% if enable_opendaylight | bool %}
 [ml2_odl]
 url = {{ internal_protocol }}://{{ kolla_internal_vip_address }}:{{ opendaylight_haproxy_restconf_port }}/controller/nb/v2/neutron
