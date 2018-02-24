@@ -1,9 +1,8 @@
 ---
 - name: Creating rabbitmq volume
-  kolla_docker:
-    action: "create_volume"
-    common_options: "{{ docker_common_options }}"
-    name: "{{ project_name }}"
+  file:
+    path: /var/ait/rabbitmq
+    state: directory
   register: rabbitmq_volume
 
 - name: Running RabbitMQ bootstrap container
@@ -24,5 +23,5 @@
     volumes:
       - "{{ node_config_directory }}/{{ project_name }}/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "{{ project_name }}:/var/lib/rabbitmq/"
+      - "/var/ait/rabbitmq:/var/lib/rabbitmq/"
   when: rabbitmq_volume | changed

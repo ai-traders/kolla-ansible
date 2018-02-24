@@ -12,7 +12,7 @@ opendaylight_services:
     volumes:
       - "{{ node_config_directory }}/opendaylight/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
 
 ####################
 # Docker

@@ -20,7 +20,7 @@
     volumes:
       - "{{ node_config_directory }}/ironic-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "kolla_logs:/var/log/kolla"
+      - "/var/ait/kolla_logs:/var/log/kolla"
   when: inventory_hostname in groups['ironic-api']
 
 - name: Starting ironic-conductor container
@@ -37,7 +37,7 @@
       - "/sys:/sys"
       - "/dev:/dev"
       - "/run:/run:shared"
-      - "kolla_logs:/var/log/kolla"
+      - "/var/ait/kolla_logs:/var/log/kolla"
       - "ironic:/var/lib/ironic"
       - "ironic_pxe:/tftpboot/"
   when: inventory_hostname in groups['ironic-conductor']
@@ -52,7 +52,7 @@
     volumes:
       - "{{ node_config_directory }}/ironic-inspector/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "kolla_logs:/var/log/kolla"
+      - "/var/ait/kolla_logs:/var/log/kolla"
   when: inventory_hostname in groups['ironic-inspector']
 
 - name: Starting ironic-dnsmasq container

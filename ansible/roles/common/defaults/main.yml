@@ -12,7 +12,7 @@ common_services:
     volumes:
       - "{{ node_config_directory }}/fluentd/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
   kolla-toolbox:
     container_name: kolla_toolbox
     image: "{{ kolla_toolbox_image_full }}"
@@ -25,7 +25,7 @@ common_services:
       - "/etc/localtime:/etc/localtime:ro"
       - "/dev/:/dev/"
       - "/run/:/run/:shared"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
 # DUMMY_ENVIRONMENT is needed because empty environment is not supported
   cron:
     container_name: cron
@@ -35,7 +35,7 @@ common_services:
     volumes:
       - "{{ node_config_directory }}/cron/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
 
 
 ####################

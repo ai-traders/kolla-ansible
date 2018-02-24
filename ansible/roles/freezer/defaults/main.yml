@@ -10,8 +10,8 @@ freezer_services:
     volumes:
       - "{{ node_config_directory }}/freezer-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "freezer:/var/lib/freezer/"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/freezer:/var/lib/freezer/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
 
 
 ####################

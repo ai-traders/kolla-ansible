@@ -11,7 +11,7 @@ redis_services:
       - "{{ node_config_directory }}/redis/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "{{ project_name }}:/var/lib/redis/"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
   redis-sentinel:
     container_name: redis_sentinel
     group: redis
@@ -20,7 +20,7 @@ redis_services:
     volumes:
       - "{{ node_config_directory }}/redis-sentinel/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
 
 ####################
 # Docker

@@ -27,7 +27,7 @@
 
 - block:
   - name: Copying grastate.dat file from mariadb container
-    command: docker cp mariadb:/var/lib/mysql/grastate.dat /tmp/kolla_mariadb_grastate.dat
+    command: cp /var/ait/mariadb:/var/lib/mysql/grastate.dat /tmp/kolla_mariadb_grastate.dat
     changed_when: false
 
   - name: Print the content of grastate.dat file

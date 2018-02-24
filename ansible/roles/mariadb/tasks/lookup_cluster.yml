@@ -12,10 +12,9 @@
   run_once: True
 
 - name: Creating mariadb volume
-  kolla_docker:
-    action: "create_volume"
-    common_options: "{{ docker_common_options }}"
-    name: "mariadb"
+  file:
+    path: /var/ait/mariadb
+    state: directory
   register: mariadb_volume
 
 - name: Writing hostname of host with existing cluster files to temp file

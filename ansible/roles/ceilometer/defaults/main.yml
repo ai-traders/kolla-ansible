@@ -11,8 +11,8 @@ ceilometer_services:
     volumes:
       - "{{ node_config_directory }}/ceilometer-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "ceilometer:/var/lib/ceilometer/"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/ceilometer:/var/lib/ceilometer/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
   ceilometer-notification:
     container_name: ceilometer_notification
     group: ceilometer-notification
@@ -21,7 +21,7 @@ ceilometer_services:
     volumes:
       - "{{ node_config_directory }}/ceilometer-notification/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
   ceilometer-central:
     container_name: ceilometer_central
     group: ceilometer-central
@@ -30,8 +30,8 @@ ceilometer_services:
     volumes:
       - "{{ node_config_directory }}/ceilometer-central/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "ceilometer:/var/lib/ceilometer/"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/ceilometer:/var/lib/ceilometer/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
   ceilometer-compute:
     container_name: ceilometer_compute
     group: ceilometer-compute
@@ -42,8 +42,8 @@ ceilometer_services:
       - "{{ node_config_directory }}/ceilometer-compute/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/run/:/run/:shared"
-      - "ceilometer:/var/lib/ceilometer/"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/ceilometer:/var/lib/ceilometer/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
       - "nova_libvirt:/var/lib/libvirt"
 
 

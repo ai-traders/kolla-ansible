@@ -11,7 +11,7 @@ sahara_services:
       - "{{ node_config_directory }}/sahara-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "sahara:/var/lib/sahara/"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
   sahara-engine:
     container_name: sahara_engine
     group: sahara-engine
@@ -22,7 +22,7 @@ sahara_services:
       - "{{ node_config_directory }}/sahara-engine/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "sahara:/var/lib/sahara/"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
       - "/run:/run:shared"
 
 

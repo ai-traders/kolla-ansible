@@ -11,7 +11,7 @@ qdrouterd_services:
       - "{{ node_config_directory }}/qdrouterd/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "qdrouterd:/var/lib/qdrouterd/"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
 
 
 ####################

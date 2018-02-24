@@ -12,10 +12,9 @@
   run_once: True
 
 - name: Creating ceph_mon_config volume
-  kolla_docker:
-    action: "create_volume"
-    common_options: "{{ docker_common_options }}"
-    name: "ceph_mon_config"
+  file:
+    path: /var/ait/ceph_mon_config
+    state: directory
   register: ceph_mon_config_volume
 
 - name: Writing hostname of host with existing cluster files to temp file

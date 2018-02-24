@@ -10,7 +10,7 @@ zun_services:
     volumes:
       - "{{ node_config_directory }}/zun-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
   zun-compute:
     container_name: zun_compute
     group: zun-compute
@@ -20,7 +20,7 @@ zun_services:
     volumes:
       - "{{ node_config_directory }}/zun-compute/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
       - "/run:/run:shared"
       - "/usr/lib/docker:/usr/lib/docker"
 

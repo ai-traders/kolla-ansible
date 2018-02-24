@@ -10,7 +10,7 @@ karbor_services:
     volumes:
       - "{{ node_config_directory }}/karbor-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
   karbor-protection:
     container_name: karbor_protection
     group: karbor-protection
@@ -19,7 +19,7 @@ karbor_services:
     volumes:
       - "{{ node_config_directory }}/karbor-protection/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
   karbor-operationengine:
     container_name: karbor_operationengine
     group: karbor-operationengine
@@ -28,7 +28,7 @@ karbor_services:
     volumes:
       - "{{ node_config_directory }}/karbor-operationengine/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
 
 
 ####################

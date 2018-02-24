@@ -10,8 +10,8 @@ barbican_services:
     volumes:
       - "{{ node_config_directory }}/barbican-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "barbican:/var/lib/barbican/"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/barbican:/var/lib/barbican/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
   barbican-keystone-listener:
     container_name: barbican_keystone_listener
     group: barbican-keystone-listener
@@ -20,7 +20,7 @@ barbican_services:
     volumes:
       - "{{ node_config_directory }}/barbican-keystone-listener/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
   barbican-worker:
     container_name: barbican_worker
     group: barbican-worker
@@ -29,7 +29,7 @@ barbican_services:
     volumes:
       - "{{ node_config_directory }}/barbican-worker/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
 
 ####################
 # Database

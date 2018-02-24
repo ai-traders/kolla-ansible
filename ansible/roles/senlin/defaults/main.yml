@@ -10,7 +10,7 @@ senlin_services:
     volumes:
       - "{{ node_config_directory }}/senlin-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
   senlin-engine:
     container_name: senlin_engine
     group: senlin-engine
@@ -19,7 +19,7 @@ senlin_services:
     volumes:
       - "{{ node_config_directory }}/senlin-engine/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
 
 ####################
 # Database

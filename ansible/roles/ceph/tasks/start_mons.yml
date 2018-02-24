@@ -11,6 +11,6 @@
     volumes:
       - "{{ node_config_directory }}/ceph-mon/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "ceph_mon:/var/lib/ceph"
-      - "ceph_mon_config:/etc/ceph"
-      - "kolla_logs:/var/log/kolla/"
+      - "/var/ait/ceph_mon:/var/lib/ceph"
+      - "/var/ait/ceph_mon_config:/etc/ceph"
+      - "/var/ait/kolla_logs:/var/log/kolla/"
