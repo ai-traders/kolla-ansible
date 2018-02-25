@@ -464,6 +464,9 @@ enable_destroy_images: "no"
 ####################
 
 logging_environment: testing
+enable_ceph_graylog_logging: "no"
+ceph_graylog_host: 127.0.0.1
+ceph_graylog_port: 12201
 enable_graylog_logging: "no"
 graylog_port: 12201
 elasticsearch_address: "{{ kolla_internal_vip_address }}"

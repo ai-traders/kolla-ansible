@@ -5,6 +5,21 @@ err to syslog = false
 log to stderr = false
 err to stderr = false
 
+{% if enable_ceph_graylog_logging | bool %}
+log to graylog = true
+err to graylog = true
+log graylog host = {{ ceph_graylog_host }}
+log graylog port = {{ ceph_graylog_port }}
+
+mon cluster log to graylog = true
+mon cluster log to graylog host = {{ ceph_graylog_host }}
+mon cluster log to graylog port = {{ ceph_graylog_port }}
+
+clog to graylog = true
+clog to graylog host = {{ ceph_graylog_host }}
+clog to graylog port = {{ ceph_graylog_port }}
+{% endif %}
+
 fsid = {{ ceph_cluster_fsid }}
 mon initial members = {% for host in groups['ceph-mon'] %}{{ hostvars[host]['storage_address'] }}{% if not loop.last %}, {% endif %}{% endfor %}
 
