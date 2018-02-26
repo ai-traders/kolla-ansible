@@ -15,6 +15,13 @@
             "optional": true
         },
         {
+            "source": "{{ container_config_directory }}/ceph.client.backdoor.keyring",
+            "dest": "/etc/ceph/ceph.client.backdoor.keyring",
+            "owner": "ceph",
+            "perm": "0600",
+            "optional": true
+        },
+        {
             "source": "{{ container_config_directory }}/ceph.client.mon.keyring",
             "dest": "/etc/ceph/ceph.client.mon.keyring",
             "owner": "ceph",

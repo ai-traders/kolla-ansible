@@ -29,6 +29,7 @@
     sha1: "{{ item.sha1 }}"
   with_items:
     - "{{ ceph_files['ceph.client.admin.keyring'] }}"
+    - "{{ ceph_files['ceph.client.backdoor.keyring'] }}"
     - "{{ ceph_files['ceph.client.mon.keyring'] }}"
     - "{{ ceph_files['ceph.client.radosgw.keyring'] }}"
     - "{{ ceph_files['ceph.monmap'] }}"
