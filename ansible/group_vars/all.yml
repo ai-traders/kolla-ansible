@@ -463,6 +463,8 @@ enable_destroy_images: "no"
 # Logging options
 ####################
 
+enable_ceph_metrics: "{{ enable_ceph }}"
+
 logging_environment: testing
 enable_ceph_graylog_logging: "no"
 ceph_graylog_host: 127.0.0.1

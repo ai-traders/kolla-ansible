@@ -9,6 +9,18 @@
     - item.value.enabled | bool
   with_dict: "{{ collectd_services }}"
 
+- name: Copying over ceph.conf(s)
+  merge_configs:
+    sources:
+      - "{{ role_path }}/../ceph/templates/ceph.conf.j2"
+      - "{{ node_custom_config }}/ceph.conf"
+      - "{{ node_custom_config }}/ceph/{{ inventory_hostname }}/ceph.conf"
+    dest: "{{ node_config_directory }}/{{ item.key }}/ceph.conf"
+  when:
+    - inventory_hostname in groups['collectd']
+    - enable_ceph_metrics | bool
+  with_dict: "{{ collectd_services }}"
+
 - name: Ensuring Plugin directory exist
   file:
     path: "{{ node_config_directory }}/{{ item.key }}/collectd.conf.d"
@@ -30,6 +42,26 @@
   with_dict: "{{ collectd_services }}"
   notify:
     - Restart collectd container
+
+- name: Pulling cephx keyring for collectd
+  command: docker exec ceph_mon ceph auth get-or-create client.collectd mon 'allow rx' osd 'allow rx' mgr 'allow rx'
+  register: cephx_key_metric
+  delegate_to: "{{ groups['ceph-mon'][0] }}"
+  changed_when: False
+  run_once: True
+  when:
+    - enable_ceph_metrics | bool
+
+- name: Pushing cephx keyring
+  copy:
+    content: "{{ cephx_key_metric.stdout }}\n\r"
+    dest: "{{ node_config_directory }}/{{ item.key }}/ceph.client.collectd.keyring"
+    mode: "0600"
+  with_dict: "{{ collectd_services }}"
+  when:
+    - enable_ceph_metrics | bool
+    - inventory_hostname in groups[item.value.group]
+    - item.value.enabled | bool
 
 - name: Copying over collectd.conf for services
   vars:

@@ -10,11 +10,38 @@ LoadPlugin memory
 LoadPlugin network
 LoadPlugin sensors
 
+{% if enable_ceph_metrics | bool %}
+<LoadPlugin python>
+  Globals true
+</LoadPlugin>
+
+<Plugin python>
+  LogTraces true
+  Interactive false
+  Import "collectd_ceph_storage"
+  <Module collectd_ceph_storage>
+    CephCluster "ceph"
+    CephClientName "collectd"
+
+    CephRadosBench {{ collectd_ceph_rados_bench_enabled | bool }}
+    CephRadosBenchInterval {{ collectd_ceph_rados_bench_interval | int }}
+    CephMONStats {{ collectd_ceph_mon_stats_enabled | bool }}
+    CephMONStatsInterval {{ collectd_ceph_mon_stats_interval | int }}
+    CephOSDStats {{ collectd_ceph_osd_stats_enabled | bool }}
+    CephOSDStatsInterval {{ collectd_ceph_osd_stats_interval| int }}
+    CephPGStats {{ collectd_ceph_pg_enabled | bool }}
+    CephPGStatsInterval {{ collectd_ceph_pg_interval | int }}
+    CephPoolStats {{ collectd_ceph_pool_enabled | bool }}
+    CephPoolStatsInterval {{ collectd_ceph_pool_interval | int }}
+  </Module>
+</Plugin>
+{% endif %}
+
 {% if collectd_smart_disks is defined %}
 LoadPlugin exec
 <Plugin exec>
    Exec "collectd:collectd" "/usr/bin/collectd-smartmon" {% for disk in collectd_smart_disks %}"{{ disk }}" {% endfor %}
-   
+
 </Plugin>
 {% endif %}
 

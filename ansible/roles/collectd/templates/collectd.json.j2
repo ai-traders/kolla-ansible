@@ -9,6 +9,19 @@
             "owner": "collectd",
             "perm": "0600"
         }
+        {% if enable_ceph | bool %},
+        {
+            "source": "{{ container_config_directory }}/ceph.client.collectd.keyring",
+            "dest": "/etc/ceph/",
+            "owner": "collectd",
+            "perm": "0700"
+        },
+        {
+            "source": "{{ container_config_directory }}/ceph.conf",
+            "dest": "/etc/ceph/",
+            "owner": "collectd",
+            "perm": "0700"
+        }{% endif %}
     ],
     "permissions": [
         {

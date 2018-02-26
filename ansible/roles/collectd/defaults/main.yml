@@ -25,3 +25,15 @@ collectd_image_full: "{{ collectd_image }}:{{ collectd_tag }}"
 # OpenStack
 ####################
 collectd_logging_debug: "{{ openstack_logging_debug }}"
+
+# Ceph metrics
+collectd_ceph_rados_bench_enabled: no
+collectd_ceph_rados_bench_interval: 60
+collectd_ceph_mon_stats_enabled: yes
+collectd_ceph_mon_stats_interval: 10
+collectd_ceph_osd_stats_enabled: yes
+collectd_ceph_osd_stats_interval: 10
+collectd_ceph_pg_enabled: yes
+collectd_ceph_pg_interval: 10
+collectd_ceph_pool_enabled: yes
+collectd_ceph_pool_interval: 10
