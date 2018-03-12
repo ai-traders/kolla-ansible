@@ -1,0 +1,2 @@
+mysqldump_image_full: deitch/mysql-backup
+mysqldump_begin: 2300
