@@ -24,6 +24,7 @@ set_sysctl: "{{ not in_docker }}"
 
 enable_consul: False
 consul_port: 8500
+haproxy_consul_port: 8510
 
 ###################
 # Kolla options
