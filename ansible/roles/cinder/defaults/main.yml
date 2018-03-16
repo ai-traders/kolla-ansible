@@ -10,7 +10,7 @@ cinder_services:
     volumes:
       - "{{ node_config_directory }}/cinder-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   cinder-scheduler:
     container_name: cinder_scheduler
     group: cinder-scheduler
@@ -19,7 +19,7 @@ cinder_services:
     volumes:
       - "{{ node_config_directory }}/cinder-scheduler/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   cinder-volume:
     container_name: cinder_volume
     group: cinder-volume
@@ -35,7 +35,7 @@ cinder_services:
       - "/run/:/run/:shared"
       - "/var/ait/cinder:/var/lib/cinder"
       - "{% if enable_iscsid | bool %}iscsi_info:/etc/iscsi{% endif %}"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   cinder-backup:
     container_name: cinder_backup
     group: cinder-backup
@@ -49,7 +49,7 @@ cinder_services:
       - "/run/:/run/:shared"
       - "/backup/cinder:/var/lib/cinder"
       - "{% if enable_iscsid | bool %}iscsi_info:/etc/iscsi{% endif %}"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
 
 ####################
 # Ceph

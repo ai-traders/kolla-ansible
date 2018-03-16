@@ -10,7 +10,7 @@ kibana_services:
     volumes:
       - "{{ node_config_directory }}/kibana/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
 
 
 ####################

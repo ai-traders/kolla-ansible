@@ -21,7 +21,7 @@ ovsdpdk_services:
       - "{{ node_config_directory }}/ovsdpdk-db/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/run:/run:shared"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
       - "ovsdpdk_db:/var/lib/openvswitch/"
   ovsdpdk-vswitchd:
     container_name: "ovsdpdk_vswitchd"
@@ -43,7 +43,7 @@ ovsdpdk_services:
       - "/lib/modules:/lib/modules:ro"
       - "/run:/run:shared"
       - "/dev:/dev:shared"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
 
 ####################
 # OVS

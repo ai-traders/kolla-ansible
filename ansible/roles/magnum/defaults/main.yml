@@ -10,7 +10,7 @@ magnum_services:
     volumes:
       - "{{ node_config_directory }}/magnum-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   magnum-conductor:
     container_name: magnum_conductor
     group: magnum-conductor
@@ -20,7 +20,7 @@ magnum_services:
       - "{{ node_config_directory }}/magnum-conductor/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "magnum:/var/lib/magnum/"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
 
 
 ####################

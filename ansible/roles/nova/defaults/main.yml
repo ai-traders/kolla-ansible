@@ -23,7 +23,7 @@ nova_services:
       - "/run/:/run/:shared"
       - "/dev:/dev"
       - "/sys/fs/cgroup:/sys/fs/cgroup"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
       - "/var/ait/libvirtd:/var/lib/libvirt"
       - "/var/ait/nova_compute:/var/lib/nova/"
       - "{% if enable_cinder_backend_nfs | bool or cinder_backend_glusterfs | bool %}/var/lib/nova/mnt:/var/lib/nova/mnt:shared{% endif %}"
@@ -36,7 +36,7 @@ nova_services:
     volumes:
       - "{{ node_config_directory }}/nova-ssh/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla"
+      - "/var/log/kolla_logs:/var/log/kolla"
       - "/var/ait/nova_compute:/var/lib/nova"
       - "{% if enable_cinder_backend_nfs | bool or cinder_backend_glusterfs | bool %}/var/lib/nova/mnt:/var/lib/nova/mnt:shared{% endif %}"
   placement-api:
@@ -47,7 +47,7 @@ nova_services:
     volumes:
       - "{{ node_config_directory }}/placement-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   nova-api:
     container_name: "nova_api"
     group: "nova-api"
@@ -58,7 +58,7 @@ nova_services:
       - "{{ node_config_directory }}/nova-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/lib/modules:/lib/modules:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   nova-consoleauth:
     container_name: "nova_consoleauth"
     group: "nova-consoleauth"
@@ -67,7 +67,7 @@ nova_services:
     volumes:
       - "{{ node_config_directory }}/nova-consoleauth/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   nova-novncproxy:
     container_name: "nova_novncproxy"
     group: "nova-novncproxy"
@@ -76,7 +76,7 @@ nova_services:
     volumes:
       - "{{ node_config_directory }}/nova-novncproxy/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   nova-scheduler:
     container_name: "nova_scheduler"
     group: "nova-scheduler"
@@ -85,7 +85,7 @@ nova_services:
     volumes:
       - "{{ node_config_directory }}/nova-scheduler/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   nova-spicehtml5proxy:
     container_name: "nova_spicehtml5proxy"
     group: "nova-spicehtml5proxy"
@@ -94,7 +94,7 @@ nova_services:
     volumes:
       - "{{ node_config_directory }}/nova-spicehtml5proxy/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   nova-serialproxy:
     container_name: "nova_serialproxy"
     group: "nova-serialproxy"
@@ -103,7 +103,7 @@ nova_services:
     volumes:
       - "{{ node_config_directory }}/nova-serialproxy/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   nova-conductor:
     container_name: "nova_conductor"
     group: "nova-conductor"
@@ -112,7 +112,7 @@ nova_services:
     volumes:
       - "{{ node_config_directory }}/nova-conductor/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   nova-compute:
     container_name: "nova_compute"
     group: "compute"
@@ -133,7 +133,7 @@ nova_services:
       - "/lib/modules:/lib/modules:ro"
       - "/run:/run:shared"
       - "/dev:/dev"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
       - "{% if enable_iscsid | bool %}iscsi_info:/etc/iscsi{% endif %}"
       - "/var/ait/libvirtd:/var/lib/libvirt"
       - "/var/ait/nova_compute:/var/lib/nova/"
@@ -146,7 +146,7 @@ nova_services:
     volumes:
       - "{{ node_config_directory }}/nova-compute-ironic/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
 
 ####################
 # Ceph

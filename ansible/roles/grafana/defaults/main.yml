@@ -11,7 +11,7 @@ grafana_services:
       - "{{ node_config_directory }}/grafana/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "grafana:/var/lib/grafana/"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
 
 ####################
 # Database

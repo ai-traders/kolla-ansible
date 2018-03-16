@@ -10,7 +10,7 @@ designate_services:
     volumes:
       - "{{ node_config_directory }}/designate-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   designate-backend-bind9:
     container_name: designate_backend_bind9
     group: designate-backend-bind9
@@ -19,7 +19,7 @@ designate_services:
     volumes:
       - "{{ node_config_directory }}/designate-backend-bind9/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
       - "/var/ait/designate_backend_bind9:/var/lib/named/"
   designate-central:
     container_name: designate_central
@@ -29,7 +29,7 @@ designate_services:
     volumes:
       - "{{ node_config_directory }}/designate-central/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   designate-mdns:
     container_name: designate_mdns
     group: designate-mdns
@@ -38,7 +38,7 @@ designate_services:
     volumes:
       - "{{ node_config_directory }}/designate-mdns/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   designate-worker:
     container_name: designate_worker
     group: designate-worker
@@ -47,7 +47,7 @@ designate_services:
     volumes:
       - "{{ node_config_directory }}/designate-worker/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   designate-sink:
     container_name: designate_sink
     group: designate-sink
@@ -56,7 +56,7 @@ designate_services:
     volumes:
       - "{{ node_config_directory }}/designate-sink/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
 
 
 ####################

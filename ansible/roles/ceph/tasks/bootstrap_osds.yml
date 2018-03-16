@@ -51,7 +51,7 @@
       - "{{ node_config_directory }}/ceph-osd/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/dev/:/dev/"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   with_indexed_items: "{{ osds_mix_bootstrap|default([]) }}"
 
 - name: Looking up disks to bootstrap for Ceph OSDs
@@ -123,7 +123,7 @@
       - "{{ node_config_directory }}/ceph-osd/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/dev/:/dev/"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   with_indexed_items: "{{ osds_bootstrap|default([]) }}"
 
 - pause:
@@ -171,5 +171,5 @@
       - "{{ node_config_directory }}/ceph-osd/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/dev/:/dev/"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   with_indexed_items: "{{ osds_ssd_bootstrap|default([]) }}"

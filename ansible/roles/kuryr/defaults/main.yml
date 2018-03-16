@@ -22,7 +22,7 @@ kuryr_services:
       - "/lib/modules:/lib/modules:ro"
       - "/run:/run:shared"
       - "/usr/lib/docker:/usr/lib/docker"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
 
 
 ####################

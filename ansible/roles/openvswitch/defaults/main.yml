@@ -20,7 +20,7 @@ openvswitch_services:
       - "{{ node_config_directory }}/openvswitch-db-server/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/run:/run:shared"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
       - "/var/ait/openvswitch_db:/var/lib/openvswitch/"
   openvswitch-vswitchd:
     container_name: "openvswitch_vswitchd"
@@ -42,7 +42,7 @@ openvswitch_services:
       - "/etc/localtime:/etc/localtime:ro"
       - "/lib/modules:/lib/modules:ro"
       - "/run:/run:shared"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
 
 ####################
 # Docker

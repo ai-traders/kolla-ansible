@@ -11,7 +11,7 @@ mariadb_services:
       - "{{ node_config_directory }}/mariadb/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/var/ait/mariadb:/var/lib/mysql"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
 
 
 ####################

@@ -10,7 +10,7 @@ octavia_services:
     volumes:
       - "{{ node_config_directory }}/octavia-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   octavia-health-manager:
     container_name: octavia_health_manager
     group: octavia-health-manager
@@ -19,7 +19,7 @@ octavia_services:
     volumes:
       - "{{ node_config_directory }}/octavia-health-manager/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   octavia-housekeeping:
     container_name: octavia_housekeeping
     group: octavia-housekeeping
@@ -28,7 +28,7 @@ octavia_services:
     volumes:
       - "{{ node_config_directory }}/octavia-housekeeping/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   octavia-worker:
     container_name: octavia_worker
     group: octavia-worker
@@ -37,7 +37,7 @@ octavia_services:
     volumes:
       - "{{ node_config_directory }}/octavia-worker/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
 
 
 ####################

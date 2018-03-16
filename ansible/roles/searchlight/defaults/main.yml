@@ -10,7 +10,7 @@ searchlight_services:
     volumes:
       - "{{ node_config_directory }}/searchlight-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   searchlight-listener:
     container_name: searchlight_listener
     group: searchlight-listener
@@ -19,7 +19,7 @@ searchlight_services:
     volumes:
       - "{{ node_config_directory }}/searchlight-listener/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
 
 ####################
 # Elasticsearch

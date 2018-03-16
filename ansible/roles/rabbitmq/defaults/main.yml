@@ -15,7 +15,7 @@ rabbitmq_services:
       - "{{ node_config_directory }}/{{ project_name }}/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/var/ait/rabbitmq:/var/lib/rabbitmq/"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
 
 
 ####################

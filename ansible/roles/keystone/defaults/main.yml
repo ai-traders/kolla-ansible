@@ -10,7 +10,7 @@ keystone_services:
     volumes:
       - "{{ node_config_directory }}/keystone/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
       - "{% if keystone_token_provider == 'fernet' %}keystone_fernet_tokens:/etc/keystone/fernet-keys{% endif %}"
   keystone-ssh:
     container_name: "keystone_ssh"
@@ -20,7 +20,7 @@ keystone_services:
     volumes:
       - "{{ node_config_directory }}/keystone-ssh/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
       - "keystone_fernet_tokens:/etc/keystone/fernet-keys"
   keystone-fernet:
     container_name: "keystone_fernet"
@@ -30,7 +30,7 @@ keystone_services:
     volumes:
       - "{{ node_config_directory }}/keystone-fernet/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
       - "keystone_fernet_tokens:/etc/keystone/fernet-keys"
 
 

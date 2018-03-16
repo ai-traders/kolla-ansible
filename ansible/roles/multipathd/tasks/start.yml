@@ -9,7 +9,7 @@
     privileged: True
     volumes:
       - "{{ node_config_directory }}/multipathd/:{{ container_config_directory }}/:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
       - "/etc/localtime:/etc/localtime:ro"
       - "/dev/:/dev/"
       - "/run/:/run/:shared"

@@ -11,7 +11,7 @@ heat_services:
       - "{{ node_config_directory }}/heat-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "{{ kolla_dev_repos_directory ~ '/heat/heat:/var/lib/kolla/venv/lib/python2.7/site-packages/heat' if heat_dev_mode | bool else '' }}"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   heat-api-cfn:
     container_name: heat_api_cfn
     group: heat-api-cfn
@@ -21,7 +21,7 @@ heat_services:
       - "{{ node_config_directory }}/heat-api-cfn/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "{{ kolla_dev_repos_directory ~ '/heat/heat:/var/lib/kolla/venv/lib/python2.7/site-packages/heat' if heat_dev_mode | bool else '' }}"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   heat-engine:
     container_name: heat_engine
     group: heat-engine
@@ -31,7 +31,7 @@ heat_services:
       - "{{ node_config_directory }}/heat-engine/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "{{ kolla_dev_repos_directory ~ '/heat/heat:/var/lib/kolla/venv/lib/python2.7/site-packages/heat' if heat_dev_mode | bool else '' }}"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
 
 ####################
 # Database

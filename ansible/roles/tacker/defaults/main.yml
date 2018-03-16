@@ -10,7 +10,7 @@ tacker_services:
     volumes:
       - "{{ node_config_directory }}/tacker-server/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   tacker-conductor:
     container_name: "tacker_conductor"
     group: "tacker-conductor"
@@ -19,7 +19,7 @@ tacker_services:
     volumes:
       - "{{ node_config_directory }}/tacker-conductor/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
 
 ####################
 # Database

@@ -10,7 +10,7 @@ solum_services:
     volumes:
       - "{{ node_config_directory }}/solum-api/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   solum-worker:
     container_name: solum_worker
     group: solum-worker
@@ -19,7 +19,7 @@ solum_services:
     volumes:
       - "{{ node_config_directory }}/solum-worker/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   solum-deployer:
     container_name: solum_deployer
     group: solum-deployer
@@ -28,7 +28,7 @@ solum_services:
     volumes:
       - "{{ node_config_directory }}/solum-deployer/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
   solum-conductor:
     container_name: solum_conductor
     group: solum-conductor
@@ -37,7 +37,7 @@ solum_services:
     volumes:
       - "{{ node_config_directory }}/solum-conductor/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "/var/ait/kolla_logs:/var/log/kolla/"
+      - "/var/log/kolla_logs:/var/log/kolla/"
 
 
 ####################
