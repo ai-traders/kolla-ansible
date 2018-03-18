@@ -1,8 +1,8 @@
 include "/etc/rndc.key";
 options {
-        listen-on port {{ designate_bind_port }} { {{ hostvars[inventory_hostname]['ansible_' + hostvars[inventory_hostname]['api_interface']]['ipv4']['address'] }}; };
+        listen-on port {{ designate_bind_port }} { {{ hostvars[inventory_hostname]['api_interface_address'] }}; };
         directory       "/var/lib/named";
-        allow-notify { {% for worker in groups['designate-worker'] %}{{ hostvars[worker]['ansible_' + hostvars[worker]['api_interface']]['ipv4']['address'] }};{% endfor %} };
+        allow-notify { {% for worker in groups['designate-worker'] %}{{ hostvars[worker]['api_interface_address'] }};{% endfor %} };
         allow-new-zones yes;
         dnssec-validation auto;
         auth-nxdomain no;
@@ -19,5 +19,5 @@ options {
 };
 
 controls {
-        inet {{ hostvars[inventory_hostname]['ansible_' + hostvars[inventory_hostname]['api_interface']]['ipv4']['address'] }} port {{ designate_rndc_port }} allow { {% for host in groups['designate-worker'] %}{{ hostvars[host]['ansible_' + hostvars[host]['api_interface']]['ipv4']['address'] }}; {% endfor %} } keys { "rndc-key"; };
+        inet {{ hostvars[inventory_hostname]['api_interface_address'] }} port {{ designate_rndc_port }} allow { {% for host in groups['designate-worker'] %}{{ hostvars[host]['api_interface_address'] }}; {% endfor %} } keys { "rndc-key"; };
 };
