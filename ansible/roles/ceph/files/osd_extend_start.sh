@@ -67,7 +67,14 @@ if [[ "${!KOLLA_MIX_BOOTSTRAP[@]}" ]]; then
   ln -s "${JOURNAL_PARTITION}" block.wal
   KV_DB_PARTITION="${OSD_DEV_SSD}3"
   ln -s "${KV_DB_PARTITION}" block.db
-  ceph-osd -i "${OSD_ID_HDD}" --mkfs --mkkey
+
+  # If re-using disk which was previously part of ceph OSD, above blocks needs to be cleaned first,
+  # so that they don't look like existing ceph store.
+  dd if=/dev/zero of=block bs=1M count=15
+  dd if=/dev/zero of=block.db bs=1M count=15
+  dd if=/dev/zero of=block.wal bs=1M count=15
+
+  ceph-osd -i "${OSD_ID_HDD}" --mkfs --mkkey -d
 
   OSD_INITIAL_WEIGHT=$(parted --script ${BLOCK_PARTITION_HDD} unit TB print | awk 'match($0, /^Disk.* (.*)TB/, a){printf("%.2f", a[1])}')
   ceph auth add "osd.${OSD_ID_HDD}" osd 'allow *' mon 'allow profile osd' -i "${OSD_DIR_HDD}/keyring"
