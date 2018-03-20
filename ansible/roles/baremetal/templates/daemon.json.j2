@@ -1,0 +1,12 @@
+{
+  "insecure-registries" : [
+    "{{ docker_registry }}"
+  ]
+  {% if docker_logging_to_graylog %}
+  ,"log-driver": "gelf",
+  "log-opts" : {
+    "tag": "{{ ait_environment }}",
+    "gelf-address": "udp://{{ graylog_host }}:12201"
+  }
+  {% endif %}
+}
