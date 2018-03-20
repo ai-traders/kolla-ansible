@@ -58,7 +58,10 @@
   become: True
 
 - name: Install docker SDK for python
-  pip: name=docker state=latest
+  pip:
+    name: docker
+    state: present
+    version: 3.1.1
   become: True
   retries: 2
 
