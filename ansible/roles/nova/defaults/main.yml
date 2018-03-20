@@ -10,6 +10,7 @@ nova_services:
     pid_mode: "host"
     privileged: True
     environment:
+      AIT_KVM_GID: "{{ ait_kvm_gid }}"
       AIT_NOVA_COMPUTE_TYPE: "{{ ait_nova_compute_type }}"
       AIT_NOVA_INSTANCES_MOUNT_OPTS: "{{ ait_nova_instances_mount }}"
       AIT_NOVA_INSTANCES_BASE_MOUNT_OPTS: "{{ ait_nova_instances_base_mount }}"
