@@ -1,4 +1,8 @@
 #!/bin/bash
 
-route del default
-ip route add default via 192.168.200.1
+routing_file="/var/ait/scripts/setup-custom-routing.sh"
+if [ -f "$routing_file" ]
+then
+	echo "Setting custom routes"
+  /var/ait/scripts/setup-custom-routing.sh
+fi

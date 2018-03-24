@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set +e
+
+route del default
+route add default gw {{ default_gateway }}
+
+ip route add 10.1.0.0/16 via {{ old_gateway }}

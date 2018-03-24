@@ -5,6 +5,13 @@ set -e
 # wait for docker socket, if does not start, then abort and exit
 /usr/sbin/docker-wait
 
+routing_file="/var/ait/scripts/setup-custom-routing.sh"
+if [ -f "$routing_file" ]
+then
+	echo "Setting custom routes"
+  /var/ait/scripts/setup-custom-routing.sh
+fi
+
 echo "Starting networking containers"
 docker start neutron_openvswitch_agent openvswitch_db openvswitch_vswitchd
 
@@ -25,6 +32,12 @@ docker exec openvswitch_db ovs-vsctl add-port br-{{ eth }} {{ eth }}
 {% endfor %}
 
 /usr/sbin/move-ips
+
+if [ -f "$routing_file" ]
+then
+	echo "Setting custom routes"
+  /var/ait/scripts/setup-custom-routing.sh
+fi
 
 echo "Starting all kolla containers"
 {% raw %}

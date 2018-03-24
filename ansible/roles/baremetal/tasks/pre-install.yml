@@ -1,11 +1,17 @@
 ---
-- name: deconfigure route to internet via data net
-  command: route del default
-  ignore_errors: true
+- name: Install script to configure custom routing
+  template:
+    src: setup-custom-routing.sh.j2
+    dest: /var/ait/scripts/setup-custom-routing.sh
+    mode: 0755
+    owner: root
+    group: root
   when: in_docker | bool
-- name: configure route to internet via management
-  command: route add default gw 192.168.200.1
+
+- name: configure custom routing
+  command: /var/ait/scripts/setup-custom-routing.sh
   when: in_docker | bool
+
 - name: mount tmpfs for ansible transfers
   command: "mount -t tmpfs -o size=32M tmpfs /root/.ansible"
   when:
