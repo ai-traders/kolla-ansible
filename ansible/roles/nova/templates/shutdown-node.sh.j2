@@ -19,33 +19,35 @@ else
   domains=$($VIRSH list --state-running --name | grep 'instance-')
   if [ -z "$domains" ] ; then
   	echo "No running guest VMs"
-  	exit 0
-  fi
-  for d in $domains ; do
-  	$VIRSH -q shutdown $d > /dev/null
-  	echo "Sent shutdown signal to $d"
-  done
+	else
 
-  echo "Waiting for VMs to stop"
+	  for d in $domains ; do
+	  	$VIRSH -q shutdown $d > /dev/null
+	  	echo "Sent shutdown signal to $d"
+	  done
 
-  i=0
-  while [ $i -lt $TIMEOUT ] ; do
-  	if $VIRSH list --state-running --name | grep 'instance-' ; then
-  		i=$(($i+1))
-  		echo "."
-  		sleep 1
-  	else
-      docker stop $(docker ps -a -q)
-  		exit 0
-  	fi
-  done
+	  echo "Waiting for VMs to stop"
 
-  echo "Timeout reached, forcing VMs to poweroff"
+	  i=0
+	  while [ $i -lt $TIMEOUT ] ; do
+	  	if $VIRSH list --state-running --name | grep 'instance-' ; then
+	  		i=$(($i+1))
+	  		echo "."
+	  		sleep 1
+	  	else
+	      docker stop $(docker ps -a -q)
+	  		exit 0
+	  	fi
+	  done
 
-  for d in $domains ; do
-          $VIRSH destroy $d > /dev/null
-          echo "Destroyed $d"
-  done
+	  echo "Timeout reached, forcing VMs to poweroff"
+
+	  for d in $domains ; do
+	          $VIRSH destroy $d > /dev/null
+	          echo "Destroyed $d"
+	  done
+		
+	fi
 fi
 
 docker stop $(docker ps -a -q)
