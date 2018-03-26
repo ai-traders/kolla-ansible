@@ -2,9 +2,12 @@
 
 set +e
 
+{% if not inventory_hostname in groups["network"] %}
 route del default
 route add default gw {{ default_gateway }}
+{% endif %}
 
 ip route add 10.1.0.0/16 via {{ old_gateway }}
+ip route add 10.3.0.0/16 via {{ internal_gate_ip }}
 
 exit 0

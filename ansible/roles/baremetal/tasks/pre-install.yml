@@ -1,4 +1,7 @@
 ---
+- file:
+    path: /var/ait/scripts
+    state: directory
 - name: Install script to configure custom routing
   template:
     src: setup-custom-routing.sh.j2
@@ -6,11 +9,11 @@
     mode: 0755
     owner: root
     group: root
-  when: in_docker | bool
+  when: (in_docker | bool) or (inventory_hostname in groups["network"])
 
 - name: configure custom routing
   command: /var/ait/scripts/setup-custom-routing.sh
-  when: in_docker | bool
+  when: (in_docker | bool) or (inventory_hostname in groups["network"])
 
 - name: mount tmpfs for ansible transfers
   command: "mount -t tmpfs -o size=32M tmpfs /root/.ansible"
