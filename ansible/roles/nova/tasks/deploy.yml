@@ -15,6 +15,11 @@
     - not enable_ceph | bool and nova_backend == "rbd"
     - inventory_hostname in groups['compute']
 
+- template:
+    dest: /sbin/mkfs.none
+    src: mkfs.none.j2
+    mode: 0755
+
 - file:
     path: /var/ait/scripts
     state: directory
