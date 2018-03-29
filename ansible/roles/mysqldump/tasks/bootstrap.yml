@@ -5,7 +5,7 @@
     env:
       DB_DUMP_BEGIN: "{{ mysqldump_begin }}"
       DB_DUMP_TARGET: /os2-backup
-      DBSERVER: "{{ kolla_internal_vip_address }}"
+      DB_SERVER: "{{ kolla_internal_vip_address }}"
       DBPORT: "{{ mariadb_port }}"
       DB_USER: "{{ database_user }}"
       DB_PASS: "{{ database_password }}"
