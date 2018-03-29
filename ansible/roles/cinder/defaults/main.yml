@@ -47,7 +47,7 @@ cinder_services:
       - "/etc/localtime:/etc/localtime:ro"
       - "/dev/:/dev/"
       - "/run/:/run/:shared"
-      - "/backup/cinder:/var/lib/cinder"
+      - "/backup/{{ ait_environment }}/local/cinder:/var/lib/cinder"
       - "{% if enable_iscsid | bool %}iscsi_info:/etc/iscsi{% endif %}"
       - "/var/log/kolla_logs:/var/log/kolla/"
 
