@@ -2,8 +2,10 @@
 
 set +e
 
-{% if not inventory_hostname in groups["network"] %}
 route del default
+{% if inventory_hostname in groups["network"] %}
+ip route add default via 10.0.0.1
+{% else %}
 route add default gw {{ default_gateway }}
 {% endif %}
 
