@@ -31,7 +31,7 @@
 
 # TODO(SamYaple): Improve changed_when tests
 - name: Pulling cephx keyring for nova
-  command: docker exec ceph_mon ceph auth get-or-create client.nova mon 'profile rbd' osd 'profile rbd pool={{ ceph_cinder_hdd_pool_name }}, allow rwx pool={{ ceph_cinder_ssd_pool_name }}, allow rwx pool={{ ceph_nova_pool_name }}, allow rwx pool={{ ceph_nova_pool_name }}-cache, allow rwx pool={{ ceph_glance_pool_name }}, allow rwx pool={{ ceph_glance_pool_name }}-cache'
+  command: docker exec ceph_mon ceph auth get-or-create client.nova mon 'profile rbd' osd 'profile rbd pool={{ ceph_cinder_hdd_pool_name }}, profile rbd pool={{ ceph_cinder_ssd_pool_name }}, profile rbd pool={{ ceph_nova_pool_name }}, profile rbd pool={{ ceph_glance_pool_name }}, profile rbd pool={{ ceph_nova_pool_name }}-cache, profile rbd pool={{ ceph_glance_pool_name }}-cache'
   register: cephx_key
   delegate_to: "{{ groups['ceph-mon'][0] }}"
   changed_when: False
