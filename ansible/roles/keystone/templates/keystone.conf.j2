@@ -26,6 +26,7 @@ domain_config_dir = /etc/keystone/domains
 revoke_by_id = False
 {% if keystone_token_provider == 'uuid' %}
 provider = uuid
+expiration = 86400
 {% elif keystone_token_provider == 'fernet' %}
 provider = {{ keystone_token_provider }}
 expiration = {{ fernet_token_expiry }}
