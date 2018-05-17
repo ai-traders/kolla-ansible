@@ -7,10 +7,11 @@ global
   log {{ api_interface_address }}:{{ fluentd_syslog_port }} local1
   maxconn 4000
   stats socket /var/lib/kolla/haproxy/haproxy.sock
-{% if kolla_enable_tls_external | bool %}
-  ssl-default-bind-ciphers DEFAULT:!MEDIUM:!3DES
-  ssl-default-bind-options no-sslv3 no-tlsv10
-  tune.ssl.default-dh-param 4096
+{% if kolla_enable_tls_external | bool or enable_ait_vault | bool %}
+  tune.ssl.default-dh-param 2048
+  ssl-default-server-options no-sslv3 no-tls-tickets no-tlsv10 no-tlsv11
+  ssl-default-bind-options no-sslv3 no-tls-tickets no-tlsv10 no-tlsv11
+  ssl-default-bind-ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA
 {% endif %}
 
 defaults
@@ -35,6 +36,21 @@ listen stats
    stats refresh 15s
    stats realm Haproxy\ Stats
    stats auth {{ haproxy_user }}:{{ haproxy_password }}
+
+{% if enable_ait_vault | bool %}
+listen vault
+   mode tcp
+   bind {{ kolla_internal_vip_address }}:8200
+   # use tcp content accepts to detects ssl client and server hello.
+   tcp-request inspect-delay 5s
+   tcp-request content accept if { req_ssl_hello_type 1 }
+   option dontlog-normal
+   option tcpka
+   option httpchk GET /v1/sys/seal-status
+   http-check expect rstring \"sealed\"\:false
+   server vault1 192.168.200.52:8200 check check-ssl verify required ca-file /usr/local/share/ca-certificates/ait.crt
+   server vault2 192.168.200.44:8200 check check-ssl verify required ca-file /usr/local/share/ca-certificates/ait.crt
+{% endif %}
 
 {% if enable_rabbitmq | bool %}
 listen rabbitmq_management
