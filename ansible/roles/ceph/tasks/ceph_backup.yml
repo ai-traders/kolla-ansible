@@ -1,0 +1,31 @@
+- name: Pulling cephx keyring for backup
+  command: docker exec ceph_mon ceph auth get-or-create client.backup mon 'profile rbd' osd 'profile rbd-read-only'
+  register: cephx_key
+  delegate_to: "{{ groups['ceph-mon'][0] }}"
+  changed_when: False
+  run_once: True
+
+- name: Create directory for ceph backup user configs
+  file:
+    path: /home/backup/ceph
+    state: directory
+    owner: aitbackup
+    group: aitbackup
+    mode: 0755
+  when: inventory_hostname in groups['ceph-backup']
+
+- name: Pushing cephx keyring for backup
+  copy:
+    content: "{{ cephx_key.stdout }}\n\r"
+    dest: "/home/backup/ceph/ceph.client.backup.keyring"
+    mode: "0600"
+  when: inventory_hostname in groups['ceph-backup']
+
+- name: Copying over ceph.conf
+  merge_configs:
+    sources:
+      - "{{ role_path }}/templates/ceph.conf.j2"
+      - "{{ node_custom_config }}/ceph.conf"
+      - "{{ node_custom_config }}/ceph/{{ inventory_hostname }}/ceph.conf"
+    dest: "/home/backup/ceph/ceph.conf"
+  when: inventory_hostname in groups['ceph-backup']

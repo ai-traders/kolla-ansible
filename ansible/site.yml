@@ -346,6 +346,7 @@
     - ceph-osd
     - ceph-rgw
     - ceph-mgr
+    - ceph-backup
   serial: '{{ serial|default("0") }}'
   max_fail_percentage: 5
   roles:
