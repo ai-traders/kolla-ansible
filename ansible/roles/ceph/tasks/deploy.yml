@@ -33,3 +33,6 @@
 
 - include: ceph_backup.yml
   when: inventory_hostname in groups['ceph-backup']
+
+- include: ceph_health.yml
+  when: inventory_hostname in groups['ceph-mon']

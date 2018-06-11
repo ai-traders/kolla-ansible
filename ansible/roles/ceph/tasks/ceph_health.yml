@@ -1,0 +1,76 @@
+- name: Pulling cephx keyring for health
+  command: docker exec ceph_mon ceph auth get-or-create client.health mon 'allow rx' osd 'allow r' mgr 'allow rx'
+  register: cephx_key
+  delegate_to: "{{ groups['ceph-mon'][0] }}"
+  changed_when: False
+  run_once: True
+
+- name: Pushing cephx keyring for health
+  copy:
+    content: "{{ cephx_key.stdout }}\n\r"
+    dest: "/etc/ceph/ceph.client.health.keyring"
+    mode: "0600"
+  when: inventory_hostname in groups['ceph-mon']
+
+- name: Install ceph overall health check python script
+  copy:
+    src: health_check.py
+    dest: /var/ait/scripts/health_check.py
+    mode: 0755
+
+- file:
+    path: /var/ait/config/consul
+    state: directory
+
+- name: Install consul ceph service
+  template:
+    src: consul-ceph-service.json
+    dest: /var/ait/config/consul/consul-ceph-service.json
+
+- name: Install consul ceph health check
+  vars:
+    name: "ceph-health-check"
+    args:
+      - python3.5
+      - /var/ait/scripts/health_check.py
+    interval: 30s
+    timeout: 15s
+    service_id: ceph
+  template:
+    src: consul-script-check.json.j2
+    dest: /var/ait/config/consul/ceph-health-check.json
+
+- name: Create disk check
+  vars:
+    part: "{{ item.part }}"
+    path: "{{ item.path }}"
+    name: "disk-{{ part }}-check"
+    service_id: ceph
+    args:
+      - "/usr/lib/nagios/plugins/check_disk"
+      - "-w"
+      - "{{ consul_check_disk_mon_free_warning }}"
+      - -c
+      - "{{ consul_check_disk_mon_free_critical }}"
+      - -p
+      - "{{ path }}"
+    interval: 20s
+    timeout: 5s
+  template:
+    src: consul-script-check.json.j2
+    dest: "/var/ait/config/consul/{{ name }}.json"
+  with_items:
+    - { part: ceph-mon, path: /var/ait/ceph_mon }
+
+- name: Install consul ceph_mon container check
+  vars:
+    name: "ceph-mon-container-check"
+    args:
+      - is_container_running
+      - ceph_mon
+    interval: 30s
+    timeout: 15s
+    service_id: ceph
+  template:
+    src: consul-script-check.json.j2
+    dest: "/var/ait/config/consul/{{ name }}.json"

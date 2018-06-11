@@ -1,6 +1,8 @@
 ---
 project_name: "ceph"
 
+consul_check_disk_mon_free_warning: 35%
+consul_check_disk_mon_free_critical: 10%
 
 ####################
 # Docker
