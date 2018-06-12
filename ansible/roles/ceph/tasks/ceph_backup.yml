@@ -1,5 +1,5 @@
 - name: Pulling cephx keyring for backup
-  command: docker exec ceph_mon ceph auth get-or-create client.backup mon 'profile rbd' osd 'profile rbd-read-only'
+  command: docker exec ceph_mon ceph auth get-or-create client.backup mon 'profile rbd' osd 'profile rbd'
   register: cephx_key
   delegate_to: "{{ groups['ceph-mon'][0] }}"
   changed_when: False
