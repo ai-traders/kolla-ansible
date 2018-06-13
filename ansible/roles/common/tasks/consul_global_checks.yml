@@ -1,0 +1,35 @@
+---
+- name: Install openstack credentials for consul checks
+  template:
+    src: openstack_creds.ini.j2
+    dest: /var/ait/config/consul/openstack_creds.ini
+
+- name: Install consul openstack checks
+  vars:
+    name: "{{ item.name }}"
+    cmd:
+      - "check_{{ name }}"
+      - --filename
+      - /consul/config/openstack_creds.ini
+    args: "{{ cmd + item.args }}"
+    service_id: openstack2
+    interval: 20s
+    timeout: 10s
+  template:
+    src: consul-openstack-check.json.j2
+    dest: "/var/ait/config/consul/openstack-{{ name }}.json"
+  with_items:
+    - name: nova-services
+      args: []
+    - name: nova-hypervisors
+      args:
+        - --warn_vcpus_percent
+        - 0:150
+        - --critical_vcpus_percent
+        - 0:200
+    - name: neutron-agents
+      args: []
+    - name: cinder-services
+      args: []
+    - name: glance-images
+      args: []

@@ -1,0 +1,11 @@
+{
+  "check": {
+    "interval": "{{ interval }}",
+    "timeout": "{{ timeout }}",
+    "args": {{ args | to_nice_json }},
+    "name": "{{ name }}"
+    {% if service_id is defined %}
+    ,"service_id" : "{{ service_id }}"
+    {% endif %}
+  }
+}

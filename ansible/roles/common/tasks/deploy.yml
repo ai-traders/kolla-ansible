@@ -5,3 +5,17 @@
 
 - name: Flush handlers
   meta: flush_handlers
+
+- file:
+    path: /var/ait/config/consul
+    state: directory
+
+- name: Define consul openstack service
+  template:
+    src: consul-openstack-service.json
+    dest: /var/ait/config/consul/openstack2.json
+
+- include: consul_global_checks.yml
+  when: inventory_hostname in groups['control']
+    or inventory_hostname in groups['network']
+    or inventory_hostname in groups['db']

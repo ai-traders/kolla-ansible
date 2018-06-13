@@ -1,0 +1,5 @@
+[DEFAULT]
+username=admin
+tenant_name=admin
+password={{ keystone_admin_password }}
+auth_url={{ admin_protocol }}://{{ kolla_internal_fqdn }}:{{ keystone_admin_port }}/v3
