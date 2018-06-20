@@ -29,7 +29,7 @@
     - inventory_hostname in groups['ceph-rgw']
 
 - include: ceph_rbd.yml
-  when: inventory_hostname in groups['ceph']
+  when: inventory_hostname in groups['ceph-rbd']
 
 - include: ceph_backup.yml
   when: inventory_hostname in groups['ceph-backup']

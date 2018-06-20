@@ -9,7 +9,6 @@
   file:
     path: "{{ item }}"
     state: "directory"
-  when: inventory_hostname in groups['ceph']
   with_items:
     - /etc/ceph
     - /tmp/secrets
@@ -21,7 +20,6 @@
       - "{{ node_custom_config }}/ceph.conf"
       - "{{ node_custom_config }}/ceph/{{ inventory_hostname }}/ceph.conf"
     dest: "/etc/ceph/ceph.conf"
-  when: inventory_hostname in groups['ceph']
 
 - name: Pulling cephx keyring for rbd
   command: docker exec ceph_mon ceph auth get-or-create client.rbd mon 'profile rbd' osd 'profile rbd pool=rbd'
@@ -42,7 +40,6 @@
     content: "{{ cephx_key.stdout }}\n\r"
     dest: "/etc/ceph/ceph.client.rbd.keyring"
     mode: "0600"
-  when: inventory_hostname in groups['ceph']
 
 - name: Pushing secrets xml for libvirt
   vars:
@@ -52,8 +49,6 @@
     src: "secret.xml.j2"
     dest: "/tmp/secrets/{{ uuid }}.xml"
     mode: "0600"
-  when:
-    - inventory_hostname in groups['ceph']
 
 - name: Define libvirt secret
   vars:

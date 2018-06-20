@@ -38,14 +38,14 @@
   run_once: True
 
 # TODO(SamYaple): Improve failed_when and changed_when tests
-- name: Pulling nova cephx keyring for libvirt
+- name: Pulling nova cephx keyring for nova
   command: docker exec ceph_mon ceph auth get-key client.nova
   register: nova_cephx_raw_key
   delegate_to: "{{ groups['ceph-mon'][0] }}"
   changed_when: False
   run_once: True
 
-- name: Pulling cinder cephx keyring for libvirt
+- name: Pulling cinder cephx keyring for cinder
   command: docker exec ceph_mon ceph auth get-key client.cinder
   register: cinder_cephx_raw_key
   delegate_to: "{{ groups['ceph-mon'][0] }}"
