@@ -29,7 +29,7 @@ WEBROOT = '/'
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['*']
 
-SESSION_TIMEOUT=86400
+SESSION_TIMEOUT={{ horizon_session_timeout }}
 
 {% if horizon_backend_database | bool %}
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'

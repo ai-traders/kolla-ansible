@@ -71,6 +71,7 @@ keystone_ssh_image_full: "{{ keystone_ssh_image }}:{{ keystone_ssh_tag }}"
 ####################
 # OpenStack
 ####################
+keystone_token_expiration: 14400
 keystone_logging_debug: "{{ openstack_logging_debug }}"
 
 openstack_keystone_auth: "{{ openstack_auth }}"
