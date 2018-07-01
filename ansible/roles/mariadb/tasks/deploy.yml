@@ -10,3 +10,14 @@
 
 # Test haproxy user through VIP
 - include: check.yml
+
+- name: Install patch to clean expired keystone tokens
+  template:
+    src: clean-keystone-tokens.sh.j2
+    dest: /usr/bin/clean-keystone-tokens
+    mode: 0755
+
+- name: Install cron job to clean expired keystone tokens
+  template:
+    src: clean-keystone.cron
+    dest: /etc/cron.d/clean-keystone

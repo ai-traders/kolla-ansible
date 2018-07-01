@@ -1,0 +1,1 @@
+*/2 * * * * root /usr/bin/clean-keystone-tokens  >> /var/log/clean-keystone.log 2>&1
