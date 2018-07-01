@@ -20,6 +20,13 @@
   when:
     - in_docker | bool
     - ansible_connection == 'docker'
+
+- name: remove docker debian apt repository
+  file:
+    path: /etc/apt/sources.list.d/docker.list
+    state: absent
+  when: not enable_ait_docker_mirror
+  
 # NOTE: raw install is required to support cloud images which do not have python installed
 - name: "Install python2 python-simplejson iproute2"
   become: True

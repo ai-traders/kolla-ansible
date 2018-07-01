@@ -72,7 +72,7 @@
   lvol:
     lv: "{{ final_volume }}"
     vg: "{{ vg }}"
-    size: "100%VG"
+    size: "{{ ait_nova_vflavor_size }}"
   when: ait_nova_compute_type == 'v'
 
 - name: Format ext4 filesystem for instances

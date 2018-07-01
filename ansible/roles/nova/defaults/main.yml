@@ -1,6 +1,8 @@
 ---
 project_name: "nova"
 
+ait_nova_vflavor_size: 100%VG
+
 nova_services:
   nova-libvirt:
     container_name: nova_libvirt
