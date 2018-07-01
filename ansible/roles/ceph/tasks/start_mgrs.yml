@@ -26,8 +26,8 @@
       - "/etc/localtime:/etc/localtime:ro"
       - "/var/log/kolla_logs:/var/log/kolla"
 
-- name: Enable Ceph dashboard
-  command: docker exec ceph_mon ceph mgr module enable dashboard
+- name: Disable Ceph dashboard
+  command: docker exec ceph_mon ceph mgr module disable dashboard
   run_once: true
   delegate_to: "{{ groups['ceph-mon'][0] }}"
   changed_when: false
