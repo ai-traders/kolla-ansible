@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker exec -ti mariadb mysql -h {{ kolla_internal_vip_address }} -u {{ database_user }} -p{{ database_password }} keystone -e 'DELETE FROM token WHERE expires <= NOW() LIMIT 1000;'
+docker exec mariadb mysql -h {{ kolla_internal_vip_address }} -u {{ database_user }} -p{{ database_password }} keystone -e 'DELETE FROM token WHERE expires <= NOW() LIMIT 1000;'
