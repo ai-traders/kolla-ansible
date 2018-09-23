@@ -74,7 +74,9 @@ if [[ "${!KOLLA_MIX_BOOTSTRAP[@]}" ]]; then
   dd if=/dev/zero of=block.db bs=1M count=15
   dd if=/dev/zero of=block.wal bs=1M count=15
 
-  ceph-osd -i "${OSD_ID_HDD}" --mkfs --mkkey -d
+  # This will throw an error about no key existing. That is normal. It then
+  # creates the key in the next step.
+  ceph-osd -i "${OSD_ID_HDD}" --mkfs --mkkey -d --no-mon-config
 
   OSD_INITIAL_WEIGHT=$(parted --script ${BLOCK_PARTITION_HDD} unit TB print | awk 'match($0, /^Disk.* (.*)TB/, a){printf("%.2f", a[1])}')
   ceph auth add "osd.${OSD_ID_HDD}" osd 'allow *' mon 'allow profile osd' -i "${OSD_DIR_HDD}/keyring"
@@ -116,7 +118,7 @@ if [[ "${!KOLLA_MIX_BOOTSTRAP[@]}" ]]; then
   cd ${OSD_DIR_SSD}
   BLOCK_PARTITION_SSD="${OSD_DEV_SSD}1"
   ln -s "${BLOCK_PARTITION_SSD}" block
-  ceph-osd -i "${OSD_ID_SSD}" --mkfs --mkkey
+  ceph-osd -i "${OSD_ID_SSD}" --mkfs --mkkey -d --no-mon-config
 
   OSD_INITIAL_WEIGHT=$(parted --script ${BLOCK_PARTITION_SSD} unit TB print | awk 'match($0, /^Disk.* (.*)TB/, a){printf("%.2f", a[1])}')
   ceph auth add "osd.${OSD_ID_SSD}" osd 'allow *' mon 'allow profile osd' -i "${OSD_DIR_SSD}/keyring"
