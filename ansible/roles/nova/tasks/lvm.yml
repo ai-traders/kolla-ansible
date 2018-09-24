@@ -50,10 +50,12 @@
     final_volume: "nova_{{ inventory_hostname }}_base"
     vg: "nova_{{ inventory_hostname }}"
   lvol:
+    shrink: False
     lv: "{{ final_volume }}"
     vg: "{{ vg }}"
     size: "{{ ait_nova_wflavor_base_size }}"
   when: ait_nova_compute_type == 'w'
+  ignore_errors: yes
 
 - name: Format ext4 filesystem for base images
   vars:
@@ -70,10 +72,12 @@
     final_volume: "nova_{{ inventory_hostname }}_instances"
     vg: "nova_{{ inventory_hostname }}"
   lvol:
+    shrink: False
     lv: "{{ final_volume }}"
     vg: "{{ vg }}"
     size: "{{ ait_nova_vflavor_size }}"
   when: ait_nova_compute_type == 'v'
+  ignore_errors: yes
 
 - name: Format ext4 filesystem for instances
   vars:
