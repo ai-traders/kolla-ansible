@@ -1,5 +1,9 @@
 FQDNLookup false
-LoadPlugin syslog
+<LoadPlugin LogFile>
+  File stdout
+  PrintSeverity true
+  LogLevel err
+</LoadPlugin>
 LoadPlugin cpu
 LoadPlugin cpufreq
 LoadPlugin df

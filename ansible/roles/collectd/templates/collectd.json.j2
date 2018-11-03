@@ -1,7 +1,7 @@
 {% set collectd_config = '/etc/collectd/collectd.conf' if kolla_base_distro in ['ubuntu', 'debian'] else '/etc/collectd.conf' %}
 
 {
-    "command": "/usr/sbin/collectd -f -C {{ collectd_config }}",
+    "command": "/usr/bin/collectd-silent",
     "config_files": [
         {
             "source": "{{ container_config_directory }}/collectd.conf",
