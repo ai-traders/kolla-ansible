@@ -12,6 +12,7 @@ collectd_services:
       - "/etc/localtime:/etc/localtime:ro"
       - "/var/log/kolla_logs:/var/log/kolla/"
       - "/sys/:/sys/:ro"
+      - "/sys/kernel/debug:/sys/kernel/debug:rw"
       - "/dev/:/dev/:ro"
 
 ####################
