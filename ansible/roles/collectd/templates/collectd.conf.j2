@@ -15,6 +15,11 @@ LoadPlugin memory
 LoadPlugin vmem
 LoadPlugin swap
 LoadPlugin hugepages
+LoadPlugin ping
+<Plugin ping>
+  Host "10.0.0.1"
+  Host "google.com"
+</Plugin>
 {% endif %}
 LoadPlugin network
 LoadPlugin sensors
