@@ -250,14 +250,6 @@
         tags: mariadb,
         when: enable_mariadb | bool }
 
-- name: Apply role mysqldump
-  gather_facts: false
-  hosts: backup
-  roles:
-    - { role: mysqldump,
-        tags: mysqldump,
-        when: enable_mariadb | bool }
-
 - name: Apply role iscsi
   gather_facts: false
   hosts:

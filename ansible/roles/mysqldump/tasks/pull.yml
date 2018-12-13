@@ -1,4 +1,0 @@
----
-- name: Pull mysqldump image
-  docker_image:
-    name: "{{ mysqldump_image_full }}"
